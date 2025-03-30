@@ -1,5 +1,3 @@
-### THIS WILL DEF BREAK WHEN GIVEN FULL/MOSTLY FULL DATASET BECAUSE I HAVEN'T ACCOUNTED FOR SUBDIRECTORIES HERE (i wasn't bothered lol)
-
 import os
 import cv2
 
@@ -49,7 +47,7 @@ for i,x in enumerate(data):
                print("Frame does not exist!")
                break
             else:
-                name = f'.\\data\\{labels[i]}\\frame' + str(currentframe) + '.jpg'
+                name = f'.\\Frame-data\\{labels[i]}\\frame' + str(currentframe) + '.jpg'
                 print ('Creating...' + name) 
 
                 # writing the extracted images 
