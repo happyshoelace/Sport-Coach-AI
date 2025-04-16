@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=National+Park:wght@200..800&family=Special+Gothic+Expanded+One&display=swap');
+
+:root {
+    --primary-black: #02111B;
+    --primary-white: #DFF8EB;
+    --secondary-silver: #CDCDCD;
+    --accent-red: #C4322D;
+    --accent-green: #237040;
+    --heading-font: "Special Gothic Expanded One", sans-serif;
+    --font-family: "National Park", sans-serif;
+}
+
+* {box-sizing:border-box}
+
+h1,h2{
+    font-family: var(--heading-font);
+    color: var(--primary-black);
+    margin: 0;
+}
+
+
+p,a,li,h3{
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--primary-black);
+}
+
+/* NAV */
+
+header{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    align-items:center;
+    background-color: var(--secondary-silver);
+}
+
+.identifier>img{
+    width: 100px;
+    height: auto;
+}
+
+nav{
+    margin-right:20%;
+}
+
+
+.identifier{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    margin-left: 100px;
+}
+
+.identifier>h1{
+    text-align: center;
+}
+
+nav>ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+nav>ul>li{
+    padding-left: 200px;
+}
+
+nav>ul>li>a{
+    text-decoration: none;
+}
+
+nav>ul>li>a:hover{
+    color: var(--accent-red);
+    font-weight: bold;
+    font-size: 22px;
+    transition: 0.3s;
+    font-stretch: expanded;
+}
+
+/* Try section */
+
+.textGroup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#try{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5%;
+}
+
+.textGroup>h1{
+    font-size: 60px;
+}
+
+.textGroup>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    font-size: 28px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.textGroup>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    font-weight: bold;
+    font-stretch: expanded;
+    transition:0.3s;
+}
+
+hr.solid {
+    border-top: 3px solid var(--primary-black);
+    width: 100%;
+    margin: 0;
+}
+
+/* other random stuff that's just fun */
+
+#about{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5%;
+}
+
+#about>h2{
+    font-size: 100px;
+    margin-right: 20%;
+    padding-left:10%;
+    color: var(--accent-red);
+}
+
+#features>.words{
+    grid-column: 1;
+    grid-row: 0;
+}
+
+
+#features{
+    display: grid;
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+}
+
+.slideshow-container {
+    max-width: 1000px;
+    margin: auto;
+    grid-column: 2;
+    grid-row: 0;
+  }
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+  /* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+  
+  /* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+    color: var(--primary-black);
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block; 
+    transition: background-color 0.6s ease;
+}
+  
+.active, .dot:hover {
+background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+animation-name: fade;
+animation-duration: 1.5s;
+}
+
+@keyframes fade {
+from {opacity: .4}
+to {opacity: 1}
+}
+
+footer{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    background-color: var(--secondary-silver);
+    padding: 20px 0;
+}
+
+footer>a{
+    text-decoration: none;
+    color: var(--primary-black);
+}
+
+footer>a:hover{
+    color: var(--accent-red);
+    font-weight: bold;
+    font-size: 22px;
+    transition: 0.3s;
+    font-stretch: expanded;
+}
+
+.blog-main{
+    margin:auto;
+    padding: 5%;
+}
+
+.blog-main>#intro{
+    font-size: 60px;
+    text-align: center;
+    padding-bottom: 15%;
+}
+
+#articles>h2{
+    font-size:40px;
+}
+
+article>p{
+    margin-left: 5%;
+}
+
+#contact{
+    margin-top: 5%;
+}
+
+#contact>p{
+    margin-left: 5%;
+}
+
+#contact-form{
+    padding: 5%;
+}
+
+#contact-form>form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#contact-form>form>input{
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid var(--primary-black);
+    font-family: var(--font-family);
+    border-radius: 5px;
+}
+
+#contact-form>form>input:focus{
+    outline: none;
+    border-color: var(--accent-red);
+}
+
+#contact-form>form>label{
+    font-family: var(--font-family);
+}
+
+#contact-form>form>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2%;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#contact-form>form>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    font-weight: bold;
+    font-stretch: expanded;
+    transition:0.3s;
+}
+
+#contact-form>form>*{
+    padding:2%;
+}
