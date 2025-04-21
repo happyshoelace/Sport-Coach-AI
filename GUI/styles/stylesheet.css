@@ -285,8 +285,6 @@ article>p{
 #contact-form>form{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 #contact-form>form>input{
@@ -305,6 +303,8 @@ article>p{
 
 #contact-form>form>label{
     font-family: var(--font-family);
+    font-size: 24px;
+    justify-content:flex-start;
 }
 
 #contact-form>form>button{
@@ -328,4 +328,47 @@ article>p{
 
 #contact-form>form>*{
     padding:2%;
+}
+
+#contact-form>form>input,textarea{
+    width: 100%;
+}
+
+#contact-form>h2{
+    text-align:center;
+    padding:10%;
+    font-size: 30px;
+}
+
+
+.contact{
+    display: grid;
+    grid-auto-flow: column;
+    padding:5%
+}
+
+.contact>#contact-form{
+    grid-column: 0;
+    grid-row: 0;
+    box-shadow: var(--primary-black) 0px 0px 5px;
+}
+
+.contact>#contact-info{
+    grid-column: 0;
+    grid-row: 0;
+}
+
+#contact-info>ul{
+    list-style: none;
+    margin: 0;
+}
+
+#contact-info>ul>li{
+    padding-bottom: 3%;
+    font-size: 20px;
+}
+
+#contact-info>img{
+    justify-content: center;
+    align-items: center;
 }
