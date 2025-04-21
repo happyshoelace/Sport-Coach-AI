@@ -29,9 +29,9 @@ for label in os.listdir('.\\Training Data\\'):
 
 print(data)
 
-currentframe = 0
 
 for i,x in enumerate(data):
+    currentframe = 0
     # frame 
     while(True): 
         # reading from frame 
