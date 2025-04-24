@@ -43,3 +43,5 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
         record_button.disabled = false;
         stop_button.disabled = true;
     }
+
+// I'm sure at some point we will want to be able to save the video to be able to put it in the model but this will do for now

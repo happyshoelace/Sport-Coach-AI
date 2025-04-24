@@ -378,3 +378,128 @@ article>p{
     max-width: 50%;
     height: auto
 }
+
+/* Model Video stuff */
+
+video{
+    display: block;
+    margin: 0 auto;
+    max-width: 50%;
+    height: auto;
+}
+
+.modelinput{
+    padding: 5%;
+    text-align: center;
+}
+
+.modelinput>h1{
+    font-size: 40px;
+    text-align: center;
+}
+
+.subtitle{
+    font-size: 16px;
+    text-align: center;
+    color: #505050;
+}
+
+#record-button{
+    background-color: var(--accent-green);
+}
+
+#stop-button{
+    background-color: var(--accent-red);
+
+}
+
+.video-recorder>button{
+    font-family: var(--font-family);
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
+
+.video-recorder>button:disabled{
+    background-color: var(--secondary-silver)!important;
+    color: var(--primary-black);
+    cursor: not-allowed;
+}
+
+.video-recorder>button:hover:not(:disabled){
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.video-upload{
+    padding-top: 5%;
+}
+
+.video-upload>h2{
+    padding: 2%;
+    font-size: 30px;
+}
+
+.video-upload>form>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2%;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.video-upload>form>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.video-tips{
+    display: flex;
+    align-items: flex-start;
+    padding: 5%;
+}
+
+.video-tips>img{
+    width: 50%;
+    margin-left: 15%;
+}
+
+/* Model Output stuff */
+
+.modeloutput{
+    padding:5%;
+}
+
+.modeloutput>h1{
+    font-size: 40px;
+    text-align: center;
+}
+
+.modeloutput>p{
+    text-align: center;
+}
+
+.modeloutput>video{
+    width:100%;
+    height: auto;
+}
+
+.output-info{
+    padding: 5%;
+}
+
+.output-info>ul{
+    list-style: none;
+    margin-left: 2%;;
+}
+
+.output-info>ul>li{
+    padding-bottom: 3%;
+    font-size: 20px;
+}
