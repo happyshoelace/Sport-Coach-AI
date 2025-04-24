@@ -108,7 +108,7 @@ nav>ul>li>a:hover{
     text-align: center;
 }
 
-.textGroup>button{
+.textGroup>.button-link{
     background-color: var(--accent-red);
     color: var(--primary-white);
     border: none;
@@ -116,9 +116,10 @@ nav>ul>li>a:hover{
     font-size: 28px;
     cursor: pointer;
     border-radius: 5px;
+    text-decoration: none;
 }
 
-.textGroup>button:hover{
+.textGroup>.button-link:hover{
     background-color: var(--accent-green);
     color: var(--primary-black);
     font-weight: bold;
