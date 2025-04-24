@@ -4,7 +4,7 @@ let recordedChunks = [];
 const preview = document.getElementById("preview");
 const record_button = document.getElementById("record-button");
 const stop_button = document.getElementById("stop-button");
-const downloadLink = document.getElementById("downloadLink");
+const downloadLink = document.getElementById("download-link");
 
 navigator.mediaDevices.getUserMedia({video:true, audio:false})
     .then(stream => {
@@ -12,15 +12,15 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
 
         mediaRecorder = new MediaRecorder(stream);
 
-        mediaRecorder.ondataavailable = e => {
+        mediaRecorder.ondataavailable = function(e) {
             if (e.data.size >0) {
                 recordedChunks.push(e.data);
             }
         };
 
-        mediatRecorder.onstop = () => {
+        mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, {type: "video/webm"});
-            const url = URL.createObjectURL(Blob);
+            const url = URL.createObjectURL(blob);
             downloadLink.href = url;
             downloadLink.download = "recording.webm";
             downloadLink.style.display = "inline";
@@ -31,15 +31,15 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
         console.error("Error accessing media devices.", error);
     });
 
-    start_button.onclick = () => {
+    record_button.onclick = () => {
         recordedChunks = [];
         mediaRecorder.start();
-        start_button.disabled = true;
+        record_button.disabled = true;
         stop_button.disabled = false;
     };
 
     stop_button.onclick = () => {
         mediaRecorder.stop();
-        start_button.disabled = false;
+        record_button.disabled = false;
         stop_button.disabled = true;
     }
