@@ -434,26 +434,25 @@ video{
 }
 
 .video-upload{
-    padding-top: 5%;
+    padding-top: 2%;
 }
 
 .video-upload>h2{
     padding: 2%;
-    font-size: 30px;
+    font-size: 24px;
 }
 
-.video-upload>form>button{
+.uploadButton>button{
     background-color: var(--accent-red);
     color: var(--primary-white);
     border: none;
     padding: 10px 20px;
-    margin-top: 2%;
     font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
 }
 
-.video-upload>form>button:hover{
+.uploadButton>button:hover{
     background-color: var(--accent-green);
     color: var(--primary-black);
     box-shadow: var(--primary-black)0px 2px 2px;
@@ -502,4 +501,60 @@ video{
 .output-info>ul>li{
     padding-bottom: 3%;
     font-size: 20px;
+}
+
+#hand-form>label{
+    font-family: var(--font-family);
+    font-size: 20px;
+}
+.uploadStep1{
+    padding-top:5%;
+}
+
+#hand-form{
+    margin-bottom: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom:10%;
+}
+
+
+#hand{
+    width: 20%;
+    margin: 0 auto;
+    padding:3px;
+    margin-top:2%;
+}
+
+#hand-form>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2%;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 20%;
+    margin: auto;
+    margin-top: 2%;
+}
+
+#hand-form>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.uploadButton{
+    padding-top:3%;
+}
+
+.uploadButton>button:disabled{
+    background-color: var(--secondary-silver)!important;
+    color: var(--primary-black);
+    cursor: not-allowed;
+    box-shadow: none;
+
 }

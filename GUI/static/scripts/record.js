@@ -5,6 +5,10 @@ const preview = document.getElementById("preview");
 const record_button = document.getElementById("record-button");
 const stop_button = document.getElementById("stop-button");
 const downloadLink = document.getElementById("download-link");
+const uploadForm = document.getElementById("video-upload-form");
+const uploadButton = document.getElementById("upload-button");
+const videoFileInput = document.getElementById("video-file");
+const recordedFile = document.getElementById("recorded-video");
 
 navigator.mediaDevices.getUserMedia({video:true, audio:false})
     .then(stream => {
@@ -20,11 +24,14 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
 
         mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, {type: "video/webm"});
-            const url = URL.createObjectURL(blob);
-            downloadLink.href = url;
-            downloadLink.download = "recording.webm";
-            downloadLink.style.display = "inline";
-            downloadLink.textContent = "Download recording";
+            const file = new File([blob], "recording.webm", {type: "video/webm"});
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            recordedFile.files = dt.files;
+    
+            document.getElementById('video-file').value = '';
+            uploadButton.disabled = false;
+    
         };
     })
     .catch(error => {
@@ -44,4 +51,11 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
         stop_button.disabled = true;
     }
 
-// I'm sure at some point we will want to be able to save the video to be able to put it in the model but this will do for now
+function toggleUploadButton() {
+    const hasVideoFile = videoFileInput.files.length > 0;
+    const hasRecordedFile = recordedFile.files.length > 0;
+    uploadButton.disabled = !(hasVideoFile || hasRecordedFile);
+}
+
+videoFileInput.addEventListener('change',  toggleUploadButton);
+recordedFile.addEventListener('change', toggleUploadButton);

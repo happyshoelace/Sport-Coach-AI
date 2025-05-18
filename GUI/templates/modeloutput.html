@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Fencing Coaching AI - Enhance your fencing skills with personalized coaching powered by AI.">
     <title>Lunge and Learn</title>
-    <link rel="stylesheet" href="styles/stylesheet.css">
+    <link rel="stylesheet" href="../static/styles/stylesheet.css">
 </head>
 <body>
     <header>
         <div class="identifier">
-        <img src="resources/Lunge and learn Logo.png" width="500px" alt="Lunge and Learn Logo" class="logo">
+        <img src="../static/resources/Lunge and learn Logo.png" width="500px" alt="Lunge and Learn Logo" class="logo">
         </div>
         <nav>
             <ul>
-                <li><a href="index.html">About</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index">About</a></li>
+                <li><a href="blog">Blog</a></li>
+                <li><a href="contact">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -25,12 +25,12 @@
             <h1>Model Output</h1>
             <p>Your video has been successfully processed! Here are the results:</p>
             <div class="output-container">
-                <video id="output-video" controls></video> <!-- Could be nice to actually put the media-pipe video here with joints higlighted?-->
+                <video id="output-video" href="{{jointsVideo}}"controls></video> <!-- Could be nice to actually put the media-pipe video here with joints higlighted?-->
                 <div class="output-info">
                     <h2>Analysis Results</h2>
                     <ul>
-                        <li>Footwork Type: {}</li>
-                        <li>Confidence: {}%</li>
+                        <li>Footwork Type: {{footworkClass}}</li>
+                        <li>Confidence: {{classConfidence}}%</li>
                 </ul>
                 </div>
             </div>
