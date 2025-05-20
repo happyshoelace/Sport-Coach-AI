@@ -29,6 +29,14 @@ def modelVideoInputPage():
         print(f"Dominant hand selected: {dominant_hand}")
     return render_template('modelvideoInput.html')
 
+
+@app.route('/trimvideo', methods=['POST'])
+def trimVideoPage():
+    if request.method == 'POST':
+        video = request.files.get('file')
+        
+    return render_template('trimvideo.html', video=video)
+
 @app.route('/modeloutput', methods=['POST'])
 def modelOutputPage():
     if request.method == 'POST':

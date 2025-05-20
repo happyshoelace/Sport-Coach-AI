@@ -1,0 +1,74 @@
+.control-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: var(--control-btn-bg); */
+  /* border: 2px solid var(--control-btn); */
+  background: transparent;
+  border: none;
+  border-radius: var(--control-btn-border-radius);
+  width: 0;
+  height: 0;
+  /* padding: 35px; */
+  padding: 1.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0 0rem;
+}
+
+.control-btn i,
+.control-btn svg {
+  position: relative;
+  width: 35px;
+  font-size: 25px;
+  background: transparent;
+  color: var(--control-btn-i);
+}
+
+.control-btn:active,
+.control-btn-active {
+  transform: scale(0.95);
+
+  /* border: 2px solid var(--control-btn-active); */
+}
+.control-btn:active i,
+.control-btn:active svg {
+  transform: scale(1.05);
+}
+.control-btn:hover,
+.control-btn i:hover {
+  cursor: pointer;
+}
+.control-btn:hover:not(.control-btn.active) {
+  border-color: var(--control-btn-hover);
+  /* background-color: var(--control-btn-hover);  */
+  opacity: 0.9;
+}
+.control-btn:hover:not(.control-btn-active) i,
+.control-btn:hover:not(.control-btn-active) svg {
+  color: var(--control-btn-hover);
+}
+
+.control-btn.control-btn-active {
+  background-color: var(--control-btn-focus-bg);
+  outline: none;
+}
+.control-btn.control-btn-active i,
+.control-btn.control-btn-active svg {
+  color: var(--control-btn-focus-i);
+}
+.control-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/** mobile styles **/
+@media screen and (max-width: 768px) {
+  .control-btn i,
+  .control-btn svg {
+    font-size: 25px;
+  }
+  .control-btn {
+    padding: 1.5rem;
+  }
+}

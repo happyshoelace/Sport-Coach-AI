@@ -1,0 +1,26 @@
+.timeline .timestamp {
+  position: absolute;
+  left: 50%;
+  top: -1rem;
+  transform: translate(-50%, -100%);
+  background: rgb(46, 46, 46);
+  padding: 0.25rem 1rem;
+
+  width: fit-content;
+  opacity: 0;
+  pointer-events: none;
+  /** fadeout transition is set by JS in TimeStamp.js */
+}
+.timeline .timestamp p {
+  color: white;
+}
+/** mobile styles **/
+
+@media only screen and (max-width: 768px) {
+  .timeline .timestamp {
+    bottom: unset;
+    top: 0rem;
+    transform: translate(-50%, -100%);
+    padding: 0 0.5rem;
+  }
+}

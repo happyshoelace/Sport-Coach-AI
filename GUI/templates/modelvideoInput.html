@@ -32,7 +32,6 @@
         <video id="preview" autoplay playsinline muted></video>
         <button id="record-button">Record Video</button>
         <button id="stop-button" disabled>Stop Recording</button>
-        <a id="download-link" style="display: none;">Download Video</a>
         </div>
 
         <div class="video-upload">
@@ -42,12 +41,16 @@
             <input type="file" id="video-file" name='file' accept="video/*">
             <br>
             <input type="file" id="recorded-video" name="file" style="display:none;">
+            <input type="hidden" id="video-trim-start" name="video-trim-start" style="display:none;">
+            <input type="hidden" id="video-trim-end" name="video-trim-end" style="display:none;">
+            <div id="editor-container"></div>
             <div class="uploadButton">
-                <!-- TODO: Make a trim video page (will prob require saving video to server???? idk look into this later bianca)-->
             <h2>Then...</h2>
                 <button type="submit" id="upload-button" disabled>Upload Your Video</button> 
             </div>
         </form>
+        
+
         </div> 
     </div>
     </section> 
@@ -72,4 +75,4 @@
 </footer>
 </body>
 </html>
-<script src="../static/scripts/record.js"></script>
+<script type="module" src="../static/scripts/record.js"></script>

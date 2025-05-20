@@ -1,3 +1,4 @@
+import { trimVideo } from "./trimvideo.js";
 let mediaRecorder;
 let recordedChunks = [];
 
@@ -25,12 +26,15 @@ navigator.mediaDevices.getUserMedia({video:true, audio:false})
         mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, {type: "video/webm"});
             const file = new File([blob], "recording.webm", {type: "video/webm"});
-            const dt = new DataTransfer();
-            dt.items.add(file);
-            recordedFile.files = dt.files;
+            trimVideo(file);
+            // const dt = new DataTransfer();
+            // dt.items.add(file);
+            // recordedFile.files = dt.files;
     
-            document.getElementById('video-file').value = '';
-            uploadButton.disabled = false;
+            // document.getElementById('video-file').value = '';
+            // uploadButton.disabled = false;
+
+
     
         };
     })
