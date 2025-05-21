@@ -76,3 +76,14 @@
 </body>
 </html>
 <script type="module" src="../static/scripts/record.js"></script>
+<script type="module">
+  import { trimVideo } from './static/scripts/trimvideo.js';
+
+  const fileInput = document.getElementById('video-file');
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      trimVideo(file);
+    }
+  });
+</script>

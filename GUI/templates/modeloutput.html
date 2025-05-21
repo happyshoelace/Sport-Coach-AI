@@ -25,7 +25,9 @@
             <h1>Model Output</h1>
             <p>Your video has been successfully processed! Here are the results:</p>
             <div class="output-container">
-                <video id="output-video" href="{{jointsVideo}}"controls></video> <!-- Could be nice to actually put the media-pipe video here with joints higlighted?-->
+                <video id="output-video" src="{{ video_url }}" controls>
+                Your browser does not support the video tag.
+                </video>
                 <div class="output-info">
                     <h2>Analysis Results</h2>
                     <ul>

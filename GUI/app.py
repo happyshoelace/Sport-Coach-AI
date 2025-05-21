@@ -51,11 +51,45 @@ def trimVideoPage():
         
     return render_template('trimvideo.html', video=video)
 
+# @app.route('/modeloutput', methods=['POST'])
+# def modelOutputPage():
+#     if request.method == 'POST':
+#         global dominant_hand
+#         print(request.files.get('file'))
+#         video = request.files.get('file')
+#         # We can pop a post request to AWS here and that will fill the gaps for the template page 
+#     return render_template('modeloutput.html', jointsVideo=video, footworkClass="En Garde", classConfidence=100) 
+from werkzeug.utils import secure_filename
+from flask import url_for
+
+# at top
+UPLOAD_FOLDER = 'static/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 @app.route('/modeloutput', methods=['POST'])
 def modelOutputPage():
-    if request.method == 'POST':
-        global dominant_hand
-        print(request.files.get('file'))
-        video = request.files.get('file')
-        # We can pop a post request to AWS here and that will fill the gaps for the template page 
-    return render_template('modeloutput.html', jointsVideo=video, footworkClass="En Garde", classConfidence=100) 
+    if 'file' not in request.files:
+        # handle missing file…
+        return redirect(url_for('modelVideoInputPage'))
+    file = request.files['file']
+    if file.filename == '':
+        # handle empty filename…
+        return redirect(url_for('modelVideoInputPage'))
+
+    # save the trimmed video
+    filename = secure_filename(file.filename)
+    save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(save_path)
+
+    video_url = url_for('uploaded_file', filename=filename)
+
+    # now pass video_url (a string) to your template
+    return render_template('modeloutput.html',
+                           video_url=video_url,
+                           footworkClass="En Garde",
+                           classConfidence=100)
