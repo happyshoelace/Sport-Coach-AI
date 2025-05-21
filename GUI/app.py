@@ -1,6 +1,20 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+import os
 
 app = Flask(__name__)
+
+# Configure proper MIME type for JavaScript modules
+app.config['MIME_TYPES'] = {
+    '.js': 'application/javascript',
+    '.mjs': 'application/javascript'
+}
+
+@app.route('/static/scripts/<path:filename>')
+def serve_static(filename):
+    response = send_from_directory('static/scripts', filename)
+    if filename.endswith('.js'):
+        response.headers['Content-Type'] = 'application/javascript'
+    return response
 
 @app.route('/')
 def index():
