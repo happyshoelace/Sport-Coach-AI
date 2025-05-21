@@ -1,0 +1,66 @@
+.menu-bar-container {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* margin-bottom: 16px; */
+  background-color: var(--container-bg);
+  padding: 10px;
+  max-height: 10%;
+}
+/** buttons **/
+.menu-bar-button-container {
+  display: inline-block;
+}
+.menu-bar-button {
+  display: block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--menu-bar-btn-border-color);
+  border: none;
+  margin: 4px;
+  border-radius: 8px;
+  font-size: 20px;
+  background: var(--menu-bar-btn-bg);
+  text-transform: uppercase;
+  color: var(--menu-bar-btn-text);
+}
+.menu-bar-button i,
+.menu-bar-button svg {
+  display: inline;
+}
+.menu-bar-button-container span {
+  display: block;
+  text-align: center;
+  width: 100%;
+
+  color: var(--menu-bar-btn-text);
+}
+
+.menu-bar-button:hover,
+.menu-bar-button.toggled:not(.menu-bar-button.no-toggle-highlight) {
+  background: var(--menu-bar-btn-bg-hover);
+  color: var(--menu-bar-btn-text-hover);
+
+  /* border-color: var(--menu-bar-btn-border-color-hover); */
+  cursor: pointer;
+}
+/** mobile styles **/
+@media screen and (max-width: 768px), screen and (max-height: 712px) {
+  .menu-bar-container {
+    padding: 0.55rem;
+    background: transparent;
+  }
+}
+
+/** remove menu bar button text when height is small **/
+@media only screen and (max-height: 712px) {
+  .menu-bar-container {
+    padding: 0;
+    background: transparent;
+  }
+  .menu-bar-button-container span {
+    padding: 0;
+    display: none;
+  }
+}

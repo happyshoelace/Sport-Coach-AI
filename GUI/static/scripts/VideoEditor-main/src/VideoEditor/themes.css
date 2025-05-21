@@ -1,0 +1,90 @@
+/** colors **/
+/* Light */
+.video-editor-wrapper {
+  --overall-color: #636363;
+  --video-wrapper-bg: #eeeeee;
+  --svg-crop-overlay-bg: rgb(230, 230, 230);
+  --container-bg: #5a5a5a00;
+  --highlight-saturation: #ffcd62;
+  --highlight-luminosity: white;
+  --higlight-saturation-secondary: rgb(134, 117, 20);
+  --highlight-light: rgb(219, 219, 219);
+  --shadow-light: rgb(128, 128, 128);
+  --shadow-medium: rgb(47, 47, 47);
+  --shadow-heavy: black;
+  --transparent-bg: rgba(0, 0, 0, 0.2);
+  --semi-transparent-bg: rgba(0, 0, 0, 0.5);
+}
+/* dark */
+.video-editor-wrapper.darkmode {
+  --overall-color: #959595;
+  --video-wrapper-bg: #262626;
+  --svg-crop-overlay-bg: rgb(44, 43, 43);
+  --container-bg: #2d2d2d;
+  --highlight-saturation: gold;
+  --higlight-saturation-secondary: rgb(137, 119, 16);
+  --highlight-luminosity: white;
+  --highlight-light: #4d4d4d;
+  --shadow-light: rgb(119, 119, 119);
+  --shadow-medium: rgb(224, 224, 224);
+  --shadow-heavy: black;
+  --transparent-bg: rgba(175, 175, 175, 0.508);
+  --semi-transparent-bg: rgba(255, 217, 0, 0.514);
+}
+
+.video-editor-wrapper {
+  /** ############ SIZES ############## **/
+  --font-family: arial;
+  /** range select **/
+  --range-selector-border-size: 4px;
+  /** markers **/
+  --marker-border-size: 7px;
+  /** marker width MUST be greater than (marker-border-size * 2) **/
+  --marker-width: 20px;
+  /** frames **/
+  --frame-border-size: 2px;
+  --frame-border-style: solid;
+  /** playhead **/
+  --play-head-width: 1.5px;
+
+  /** ############ COLORS ############## **/
+  /** text **/
+  --loading-text-color: var(--shadow-medium);
+  --info-bar-text-color: var(--shadow-light);
+  /** video container **/
+  --video-container-border-size: 0px;
+  --video-container-border-color: var(--shadow-medium);
+  /** menu bar **/
+  --menu-bar-btn-bg: var(--highlight-light);
+  --menu-bar-btn-border-color: var(--shadow-light);
+  --menu-bar-btn-text: var(--shadow-medium);
+  --menu-bar-btn-bg-hover: var(--highlight-saturation);
+  --menu-bar-btn-text-hover: var(--shadow-heavy);
+  --menu-bar-btn-border-color-hover: var(--highlight-light);
+  /** frames **/
+  --frame-bg: var(--shadow-light);
+  --frame-border-color: var(--shadow-heavy);
+  /** range select **/
+  --range-selector-border-color: var(--highlight-saturation);
+  --range-selector-dragging-color: var(--highlight-saturation);
+  /** markers **/
+  --marker-border-color: var(--highlight-saturation);
+  --marker-bg-color: var(--highlight-saturation);
+  --in-out-marker-grab-color: var(--higlight-saturation-secondary);
+  /** playhead **/
+  --play-head-color: var(--highlight-luminosity);
+  /** crop slider **/
+  --crop-slider-thumb-color: var(--highlight-saturation);
+  --crop-slider-runnable-track: var(--overall-color);
+  /** control button **/
+  --control-btn: var(--overall-color);
+  --control-btn-bg: var(--transparent-bg);
+  --control-btn-i: var(--overall-color);
+  --control-btn-hover: var(--highlight-saturation);
+  --control-btn-border-radius: 50%;
+  --control-btn-hover-i: var(--highlight-saturation);
+  --control-btn-focus-i: var(--higlight-saturation-secondary);
+  --control-btn-focus-bg: var(--highlight-saturation);
+  --control-btn-active: var(--highlight-saturation);
+  --control-btn-active-icon: var(--shadow-heavy);
+}
