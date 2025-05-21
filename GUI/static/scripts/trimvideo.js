@@ -1,13 +1,19 @@
 import VideoEditor from './VideoEditor-main/dist/VideoEditor.js';
 
 export function trimVideo(inputFile) {
+    const editorContainer = document.getElementById('editor-container');
+    editorContainer.innerHTML = '';              // clear any old UI
+    editorContainer.style.width  = '100%';      // ← your desired width
+    editorContainer.style.height = '100%';
     const options = {
-        src: inputFile,  // VideoEditor accepts Blob/File directly according to docs
-        maxHeight: 450,
-        limit: { maxDuration: 60 },  // 60 second max duration
-        onError: (error) => {
-            console.error('VideoEditor error:', error);
-        },
+         src:     inputFile,
+         width:   '100%',       // force a 16∶9 viewport
+         height:  '100%',
+         maxHeight: 450,
+         limit: { maxDuration: 60 },
+         onError: (error) => {
+             console.error('VideoEditor error:', error);
+         },
         onSave: (transformations, videoSrc) => {
             console.log('Transformations:', transformations);
             console.log('Video Source:', videoSrc);
@@ -33,9 +39,23 @@ export function trimVideo(inputFile) {
             document.getElementById('editor-container').innerHTML = '';
         }
     };
+    const editor = new VideoEditor(options);
+    editor.render(editorContainer);
+    editorContainer.querySelectorAll('button')
+      .forEach(btn => btn.type='button');
 
-        const editor = new VideoEditor(options);
-        const editorContainer = document.getElementById('editor-container');
-        editorContainer.innerHTML = '';
-        editor.render(editorContainer);
-    };
+    // ① Wait just a tick for all buttons to appear, then flip their type
+    setTimeout(() => {
+        editorContainer
+        .querySelectorAll('button')
+        .forEach(btn => btn.setAttribute('type', 'button'));
+    }, 0);
+
+    // ② Also intercept any accidental form-submit from inside here
+    const form = document.getElementById('video-upload-form');
+    form.addEventListener('submit', e => {
+        if (e.submitter && e.submitter.id !== 'upload-button') {
+        e.preventDefault();
+        }
+    });
+};

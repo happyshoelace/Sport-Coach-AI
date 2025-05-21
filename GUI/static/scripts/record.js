@@ -11,10 +11,20 @@ const uploadButton = document.getElementById("upload-button");
 const videoFileInput = document.getElementById("video-file");
 const recordedFile = document.getElementById("recorded-video");
 
-navigator.mediaDevices.getUserMedia({video:true, audio:false})
+navigator.mediaDevices.getUserMedia({
+   video: {
+     width:  { ideal: 1920 },
+     height: { ideal: 1080 },
+     frameRate: { ideal: 30, max: 30 }
+   },
+   audio: false
+ })
     .then(stream => {
         preview.srcObject = stream;
-
+        preview.style.maxWidth    = 'none';
+        preview.style.width       = '640px';
+        preview.style.height      = '360px';
+        preview.style.objectFit   = 'contain';
         mediaRecorder = new MediaRecorder(stream);
 
         mediaRecorder.ondataavailable = function(e) {

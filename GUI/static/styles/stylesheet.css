@@ -388,6 +388,78 @@ video{
     height: auto;
 }
 
+#editor-container {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  margin: 1em auto;
+  background: #fafafa;
+}
+
+#editor-container > *,
+#editor-container video,
+#editor-container canvas {
+  width: 100%  !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: contain;
+}
+
+#editor-container .video-flexbox-container {
+  flex-direction: column !important;
+}
+
+/* Force both the video pane and crop pane to fill full width */
+#editor-container .video-container,
+#editor-container .crop-container {
+  width: 100% !important;
+}
+
+/* Keep 16∶9 aspect ratio for the video wrapper */
+#editor-container .video-wrap {
+  padding-bottom: 56.25% !important;  /* 9/16 = .5625 */
+}
+
+/* Make the <video> itself fill that wrapper */
+#editor-container video.preview {
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;       /* remove the auto-scale */
+  object-fit: contain;
+}
+
+#preview {
+  max-width: none !important;
+  width:      100%  !important;
+  height:     500px  !important;
+  object-fit: contain;
+}
+
+#editor-container .timeline-container {
+  height: 80px        !important;  /* choose whatever works for you */
+  max-height: 80px    !important;
+  padding:    0 20px  !important;  /* reduce the left/right padding */
+  margin:     10px 0  !important;  /* add a little breathing room */
+  box-sizing: border-box !important;
+}
+
+/* 2) Make the selector track span edge-to-edge */
+#editor-container .range-selector-container {
+  width:      100%   !important;
+  padding:    0     !important;
+  margin:     0 auto!important;
+}
+
+/* 3) Ensure the frames line up nicely inside that bar */
+#editor-container .frames-container {
+  flex:       1     !important;
+  height:     100%  !important;
+}
+#editor-container .frames-container .frame {
+  flex:       0 0 auto !important;
+  height:     100%    !important;
+  margin:     0       !important;
+}
 .modelinput{
     padding: 5%;
     text-align: center;
@@ -412,6 +484,7 @@ video{
     background-color: var(--accent-red);
 
 }
+
 
 .video-recorder>button{
     font-family: var(--font-family);
