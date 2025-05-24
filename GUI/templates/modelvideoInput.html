@@ -17,6 +17,7 @@
                 <li><a href="index">About</a></li>
                 <li><a href="blog">Blog</a></li>
                 <li><a href="contact">Contact</a></li>
+                <li><a href="login">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -37,7 +38,7 @@
         <div class="video-upload">
         <h2>Or upload your video</h2>
 
-        <form id="video-upload-form" enctype="multipart/form-data", action="/modeloutput" method="POST">
+        <form id="video-upload-form" enctype="multipart/form-data", action="/feedback" method="POST">
             <input type="file" id="video-file" name='file' accept="video/*">
             <br>
             <input type="file" id="recorded-video" name="file" style="display:none;">
@@ -58,14 +59,14 @@
         <div class="textContainer">
         <h2>Video Tips</h2>
         <ul>
-            <li>Ensure good lighting for clear visibility.</li>
+            <li>Record in good lighting for clear visibility.</li>
             <li>Record from a stable position to avoid shaky footage.</li>
             <li>Ensure your entire body is in frame.</li>
-            <li>For best results, ensure there is only one person in the video</li>
+            <li>Ensure there is only one person in the video</li>
+            <li>Record with your chest facing towards the camera for best results</li>
         </ul>
         </div>
         <img src="../static/resources/exampleinput.jpg" alt="Example of a good video input" class="example-image">
-        <!-- This photo will be replaced by one that doesn't show my room in full force lol-->
 </main>
 <footer>
     <p>&copy; 2025 Blade Trackers. All rights reserved.</p>

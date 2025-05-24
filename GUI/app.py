@@ -28,6 +28,10 @@ def homePage():
 def blogPage():
     return render_template('blog.html')
 
+@app.route('/login')
+def loginPage():
+    return render_template('login.html')
+
 @app.route('/contact')
 def contactPage():
     return render_template('contact.html')
@@ -71,7 +75,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/modeloutput', methods=['POST'])
+@app.route('/feedback', methods=['POST'])
 def modelOutputPage():
     if 'file' not in request.files:
         # handle missing file…
