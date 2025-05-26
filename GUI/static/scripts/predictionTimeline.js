@@ -27,7 +27,7 @@ const timelineChart = new Chart(timelineContext, {
       intersect: false,
     },
     plugins: {
-      legend: { position: "top" },
+      legend: { position: "right" },
       tooltip: {
         callbacks: {
           label: (ctx) => `${ctx.dataset.label} at frame = ${ctx.parsed.x}`,
@@ -75,16 +75,24 @@ function updateTimeline(predictions) {
 }
 
 updateTimeline([
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [0, 0, 0, 1],
-  [0, 0, 0, 0],
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [0, 0, 0, 1],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 0, 1, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
 ]);
 
 console.log("updated timeline!");

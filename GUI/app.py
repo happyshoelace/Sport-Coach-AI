@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
-# from classifier import save_json
+from classifier import save_json
 import os
 
 app = Flask(__name__)
@@ -92,7 +92,7 @@ def modelOutputPage():
     file.save(save_path)
 
     video_url = url_for('uploaded_file', filename=filename)
-    # _, _ = save_json("save_json")
+    save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
     print(video_url)
 
     # now pass video_url (a string) to your template
