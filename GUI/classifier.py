@@ -504,10 +504,13 @@ def predict_windows_from_json(
 
     return predictions
 
-def get_sequence_prediction(probs):
+def get_prediction_probability_and_index(probs):
     """
     probs: np.ndarray of shape (n_frames, n_classes)
     Returns: int, index of the most likely class
     """
     avg_probs = np.mean(probs, axis=0)  # average over frames
-    return int(np.argmax(avg_probs))
+    result = int(np.argmax(avg_probs))
+    avg_probs = np.mean(probs, axis=0)
+    # FIRST is prob eg 90% SECOND is index eg 2
+    return float(np.max(avg_probs)), result

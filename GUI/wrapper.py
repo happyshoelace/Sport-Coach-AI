@@ -5,7 +5,7 @@ from classifier import (save_json,
                         process_single_json_sequence, 
                         fill_and_prune_single_json, 
                         predict_windows_from_json,
-                        process_single_json_with_angles_in_place, get_sequence_prediction)
+                        process_single_json_with_angles_in_place, get_prediction_probability_and_index)
 
 def video_name_to_predictions(video_name, hand):
     # save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
@@ -27,6 +27,8 @@ def video_name_to_predictions(video_name, hand):
         model_path="model.keras"
     )
 
-    sequence_prediction = get_sequence_prediction(total_frame_predictions)
+    probability, index = get_prediction_probability_and_index(total_frame_predictions)
 
-    print("Done!", sequence_prediction)
+    print("Done!", probability)
+
+    return probability, index, total_frame_predictions

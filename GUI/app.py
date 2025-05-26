@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
-from classifier import save_json
+from wrapper import video_name_to_predictions
 import os
 
 app = Flask(__name__)
@@ -92,14 +92,18 @@ def modelOutputPage():
     file.save(save_path)
 
     video_url = url_for('uploaded_file', filename=filename)
-    save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
+
+    # don't have to provide hand
+    probability, index, total_frame_predictions = video_name_to_predictions(video_url, dominant_hand)
+    classes = ["En Garde", "Fleche", "Lunge", "Step"]
     print(video_url)
 
     # now pass video_url (a string) to your template
     return render_template('modeloutput.html',
                            video_url=video_url,
-                           footworkClass="En Garde",
-                           classConfidence=100)
+                           footworkClass=classes[index],
+                           classConfidence=probability,
+                           all_predictions=total_frame_predictions)
 
 if __name__ == "__main__":
     app.run(debug=True)
