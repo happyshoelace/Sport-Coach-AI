@@ -41,7 +41,7 @@ const timelineChart = new Chart(timelineContext, {
         ticks: { stepSize: 1, precision: 0 },
         offset: true,
         min: 0,
-        max: 10, // initial max
+        max: 10,
       },
       y: {
         type: "linear",
@@ -57,7 +57,6 @@ const timelineChart = new Chart(timelineContext, {
   },
 });
 
-// Update function to refresh chart with new predictions
 function updateTimeline(predictions) {
   const n = predictions.length;
 
@@ -75,17 +74,16 @@ function updateTimeline(predictions) {
   timelineChart.update();
 }
 
-// Example usage
 updateTimeline([
   [1, 0, 0, 0],
   [1, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [0, 0, 0, 1],
-  [0, 0, 1, 0],
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
   [1, 0, 0, 0],
   [0, 0, 0, 1],
+  [0, 0, 0, 0],
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
   [0, 0, 0, 1],
 ]);
 
