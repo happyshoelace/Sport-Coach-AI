@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fencing Coaching AI - Enhance your fencing skills with personalized coaching powered by AI.">
+    <title>Lunge and Learn</title>
+    <link rel="stylesheet" href="../static/styles/stylesheet.css">
+</head>
+<body>
+    <header>
+        <div class="identifier">
+        <img src="../static/resources/Lunge and learn Logo.png" width="500px" alt="Lunge and Learn Logo" class="logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index">About</a></li>
+                <li><a href="blog">Blog</a></li>
+                <li><a href="contact">Contact</a></li>
+                <li><a href="login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+<main>
+    <section class="modelinput">
+    <div class="uploadStep2">
+        <h1>Record Your Video</h1>
+        <p>To get started, please record a video of your fencing practice. The AI will analyze your footwork and provide personalized feedback.</p>
+        <p class="subtitle">Please note: Mask and weapon are not required.</p>
+
+        <div class="video-recorder">
+
+        <video id="preview" autoplay playsinline muted></video>
+        <button id="record-button">Record Video</button>
+        <button id="stop-button" disabled>Stop Recording</button>
+        </div>
+
+        <div class="video-upload">
+        <h2>Or upload your video</h2>
+
+        <form id="video-upload-form" enctype="multipart/form-data", action="/feedback" method="POST">
+            <input type="file" id="video-file" name='file' accept="video/*">
+            <br>
+            <input type="file" id="recorded-video" name="file" style="display:none;">
+            <input type="hidden" id="video-trim-start" name="video-trim-start" style="display:none;">
+            <input type="hidden" id="video-trim-end" name="video-trim-end" style="display:none;">
+            <div id="editor-container"></div>
+            <div class="uploadButton">
+            <h2>Then...</h2>
+                <button type="submit" id="upload-button" disabled>Upload Your Video</button> 
+            </div>
+        </form>
+        
+
+        </div> 
+    </div>
+    </section> 
+    <section class="video-tips">
+        <div class="textContainer">
+        <h2>Video Tips</h2>
+        <ul>
+            <li>Record in good lighting for clear visibility.</li>
+            <li>Record from a stable position to avoid shaky footage.</li>
+            <li>Ensure your entire body is in frame.</li>
+            <li>Ensure there is only one person in the video</li>
+            <li>Record with your chest facing towards the camera for best results</li>
+        </ul>
+        </div>
+        <img src="../static/resources/exampleinput.jpg" alt="Example of a good video input" class="example-image">
+</main>
+<footer>
+    <p>&copy; 2025 Blade Trackers. All rights reserved.</p>
+    <a href="https://github.com/Mukundks2004">Mukund</a>
+    <a href="https://github.com/happyshoelace">Bianca</a>
+    <a href="https://github.com/GammaKing2000">Adit</a>
+</footer>
+</body>
+</html>
+<script type="module" src="../static/scripts/record.js"></script>
+<script type="module">
+  import { trimVideo } from './static/scripts/trimvideo.js';
+
+  const fileInput = document.getElementById('video-file');
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      trimVideo(file);
+    }
+  });
+</script>

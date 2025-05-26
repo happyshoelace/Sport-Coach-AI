@@ -1,0 +1,619 @@
+@import url('https://fonts.googleapis.com/css2?family=National+Park:wght@200..800&family=Special+Gothic+Expanded+One&display=swap');
+
+:root {
+    --primary-black: #02111B;
+    --primary-white: #DFF8EB;
+    --secondary-silver: #CDCDCD;
+    --accent-red: #C4322D;
+    --accent-green: #237040;
+    --heading-font: "Special Gothic Expanded One", sans-serif;
+    --font-family: "National Park", sans-serif;
+}
+
+* {box-sizing:border-box}
+
+h1,h2{
+    font-family: var(--heading-font);
+    color: var(--primary-black);
+    margin: 0;
+}
+
+
+p,a,li,h3{
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--primary-black);
+}
+
+/* NAV */
+
+header{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    align-items:center;
+    background-color: var(--secondary-silver);
+    overflow-x: auto;
+    flex-wrap: wrap;
+}
+
+.identifier>img{
+    width: 150px;
+    height: auto;
+}
+
+nav{
+    margin-right:20%;
+}
+
+
+.identifier{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    margin-left: 10%;
+}
+
+
+nav>ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+
+nav>ul>li{
+    margin-left: 25%;
+    position: relative;
+}
+
+nav>ul>li>a{
+    text-decoration: none;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    display: inline-block;
+    font-family: var(--heading-font);
+    transform: scale(1);
+    font-weight: bold;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+nav>ul>li>a:hover{
+    color: var(--accent-red);
+    transform: scale(1.1);
+}
+
+/* Try section */
+
+.textGroup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#try{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5%;
+}
+
+.textGroup>h1{
+    font-size: 60px;
+    text-align: center;
+}
+
+.textGroup>.button-link{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    font-size: 28px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.textGroup>.button-link:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    font-weight: bold;
+    font-stretch: expanded;
+    transition:0.3s;
+}
+
+hr.solid {
+    border-top: 3px solid var(--primary-black);
+    width: 100%;
+    margin: 0;
+}
+
+/* other random stuff that's just fun */
+
+#about{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5%;
+}
+
+#about>h2{
+    font-size: 100px;
+    margin-right: 20%;
+    padding-left:10%;
+    color: var(--accent-red);
+}
+
+#features>.words{
+    grid-column: 0;
+    grid-row: 0;
+}
+
+#features{
+    display: grid;
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+}
+
+#features>.videoTransformation{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#features>.videoTransformation>.videoTransformationText{
+    grid-column: 0;
+    grid-row: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#features>.videoTransformation>.videoTransformationText>h2{
+    padding: 5%;
+    text-align: center;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+#features>.videoTransformation>.videoTransformationVideo{
+    grid-column: 1;
+    grid-row: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#features>.videoTransformation>.videoTransformationVideo>video{
+    padding-left: 5%;
+}
+
+footer{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    background-color: var(--secondary-silver);
+    padding: 20px 0;
+}
+
+footer>a{
+    text-decoration: none;
+    color: var(--primary-black);
+}
+
+footer>a:hover{
+    color: var(--accent-red);
+    font-weight: bold;
+    font-size: 22px;
+    transition: 0.3s;
+    font-stretch: expanded;
+}
+
+.blog-main{
+    margin:auto;
+    padding: 5%;
+}
+
+.blog-main>#intro{
+    font-size: 60px;
+    text-align: center;
+    padding-bottom: 15%;
+}
+
+#articles>h2{
+    font-size:40px;
+}
+
+article>p{
+    margin-left: 5%;
+}
+
+#contact{
+    margin-top: 5%;
+}
+
+#contact>p{
+    margin-left: 5%;
+}
+
+#contact-form, #login{
+    padding: 5%;
+}
+
+#contact-form>form, #login>form{
+    display: flex;
+    flex-direction: column;
+}
+
+#contact-form>form>input, #login>form>input{
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid var(--primary-black);
+    font-family: var(--font-family);
+    border-radius: 5px;
+}
+
+#contact-form>form>input:focus, #login>form>input:focus{
+    outline: none;
+    border-color: var(--accent-red);
+}
+
+#contact-form>form>label, #login>form>label{
+    font-family: var(--font-family);
+    font-size: 24px;
+    justify-content:flex-start;
+}
+
+#contact-form>form>button, #login>form>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2%;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#contact-form>form>button:hover, #login>form>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    font-weight: bold;
+    font-stretch: expanded;
+    transition:0.3s;
+}
+
+#contact-form>form>*, #login>form>*{
+    padding:2%;
+}
+
+#contact-form>form>input,textarea, #login>form>input{
+    width: 100%;
+}
+
+#contact-form>h2{
+    text-align:center;
+    padding:10%;
+    font-size: 30px;
+}
+
+
+.contact{
+    display: grid;
+    grid-auto-flow: column;
+    padding:5%
+}
+
+.contact>#contact-form{
+    grid-column: 0;
+    grid-row: 0;
+    box-shadow: var(--primary-black) 0px 0px 5px;
+}
+
+.contact>#contact-info{
+    grid-column: 0;
+    grid-row: 0;
+}
+
+#contact-info>ul{
+    list-style: none;
+    margin: 0;
+}
+
+#contact-info>ul>li{
+    padding-bottom: 3%;
+    font-size: 20px;
+}
+
+.contact-image{
+    display: block;
+    margin: 0 auto;
+    max-width: 50%;
+    height: auto
+}
+
+#login{
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    box-shadow: var(--primary-black) 0px 0px 5px;
+}
+
+#login>form>label{
+    margin-top: 10%;
+}
+
+#login>form>input{
+    margin-top: 5%;
+}
+
+#login>h2{
+    text-align: center;
+    font-size: 30px;
+    padding:2%;
+}
+
+/* Model Video stuff */
+
+video{
+    display: block;
+    margin: 0 auto;
+    max-width: 50%;
+    height: auto;
+}
+
+#editor-container {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  margin: 1em auto;
+  background: #fafafa;
+}
+
+#editor-container > *,
+#editor-container video,
+#editor-container canvas {
+  width: 100%  !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: contain;
+}
+
+#editor-container .video-flexbox-container {
+  flex-direction: column !important;
+}
+
+/* Force both the video pane and crop pane to fill full width */
+#editor-container .video-container,
+#editor-container .crop-container {
+  width: 100% !important;
+}
+
+/* Keep 16∶9 aspect ratio for the video wrapper */
+#editor-container .video-wrap {
+  padding-bottom: 56.25% !important;  /* 9/16 = .5625 */
+}
+
+/* Make the <video> itself fill that wrapper */
+#editor-container video.preview {
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;       /* remove the auto-scale */
+  object-fit: contain;
+}
+
+#preview {
+  max-width: none !important;
+  width:      100%  !important;
+  height:     500px  !important;
+  object-fit: contain;
+}
+
+#editor-container .timeline-container {
+  height: 80px        !important;  /* choose whatever works for you */
+  max-height: 80px    !important;
+  padding:    0 20px  !important;  /* reduce the left/right padding */
+  margin:     10px 0  !important;  /* add a little breathing room */
+  box-sizing: border-box !important;
+}
+
+/* 2) Make the selector track span edge-to-edge */
+#editor-container .range-selector-container {
+  width:      100%   !important;
+  padding:    0     !important;
+  margin:     0 auto!important;
+}
+
+/* 3) Ensure the frames line up nicely inside that bar */
+#editor-container .frames-container {
+  flex:       1     !important;
+  height:     100%  !important;
+}
+#editor-container .frames-container .frame {
+  flex:       0 0 auto !important;
+  height:     100%    !important;
+  margin:     0       !important;
+}
+.modelinput{
+    padding: 5%;
+    text-align: center;
+}
+
+.modelinput>h1{
+    font-size: 40px;
+    text-align: center;
+}
+
+.subtitle{
+    font-size: 16px;
+    text-align: center;
+    color: #505050;
+}
+
+#record-button{
+    background-color: var(--accent-green);
+}
+
+#stop-button{
+    background-color: var(--accent-red);
+
+}
+
+
+.video-recorder>button{
+    font-family: var(--font-family);
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
+
+.video-recorder>button:disabled{
+    background-color: var(--secondary-silver)!important;
+    color: var(--primary-black);
+    cursor: not-allowed;
+}
+
+.video-recorder>button:hover:not(:disabled){
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.video-upload{
+    padding-top: 2%;
+}
+
+.video-upload>h2{
+    padding: 2%;
+    font-size: 24px;
+}
+
+.uploadButton>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.uploadButton>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.video-tips{
+    display: flex;
+    align-items: flex-start;
+    padding: 5%;
+}
+
+.video-tips>img{
+    width: 50%;
+    margin-left: 15%;
+}
+
+/* Model Output stuff */
+
+.modeloutput{
+    padding:5%;
+}
+
+.modeloutput>h1{
+    font-size: 40px;
+    text-align: center;
+}
+
+.modeloutput>p{
+    text-align: center;
+}
+
+.modeloutput>video{
+    width:100%;
+    height: auto;
+}
+
+.output-info{
+    padding: 5%;
+}
+
+.output-info>ul{
+    list-style: none;
+    margin-left: 2%;;
+}
+
+.output-info>ul>li{
+    padding-bottom: 3%;
+    font-size: 20px;
+}
+
+#hand-form>label{
+    font-family: var(--font-family);
+    font-size: 20px;
+}
+.uploadStep1{
+    padding-top:5%;
+}
+
+#hand-form{
+    margin-bottom: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom:10%;
+}
+
+
+#hand{
+    width: 20%;
+    margin: 0 auto;
+    padding:3px;
+    margin-top:2%;
+}
+
+#hand-form>button{
+    background-color: var(--accent-red);
+    color: var(--primary-white);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2%;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 20%;
+    margin: auto;
+    margin-top: 2%;
+}
+
+#hand-form>button:hover{
+    background-color: var(--accent-green);
+    color: var(--primary-black);
+    box-shadow: var(--primary-black)0px 2px 2px;
+}
+
+.uploadButton{
+    padding-top:3%;
+}
+
+.uploadButton>button:disabled{
+    background-color: var(--secondary-silver)!important;
+    color: var(--primary-black);
+    cursor: not-allowed;
+    box-shadow: none;
+
+}

@@ -1,0 +1,10 @@
+opencv-python
+numpy
+tensorflow
+scikit-learn
+tqdm
+pandas
+matplotlib
+ultralytics
+mediapipe
+flask

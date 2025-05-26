@@ -1,0 +1,37 @@
+/** Controls **/
+.video-editor-controls {
+  position: relative;
+  margin-top: 16px;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-height: 10%;
+  /* background: var(--container-bg); */
+}
+
+/** play/pause btn **/
+.play-btn i,
+.play-btn svg {
+  font-size: 35px;
+  margin-left: 3px;
+}
+/** pause btn **/
+.play-btn.control-btn-active i,
+.play-btn.control-btn-active svg {
+  margin-left: -1px;
+}
+
+@media screen and (max-width: 768px) {
+  .video-editor-controls {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    flex-direction: row;
+  }
+  .play-btn i,
+  .play-btn svg {
+    font-size: 30px;
+    margin-left: 3px;
+  }
+}
