@@ -2,3 +2,4 @@
 *.mp4
 *.pt
 *.pyc
+tf_env/

@@ -4,16 +4,12 @@ import os
 import json
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from tqdm import tqdm
-# from google.colab.patches import cv2_imshow
 import pandas as pd
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
-# from google.colab.patches import cv2_imshow
 import datetime
 
 # 1) Load your YOLO model once
