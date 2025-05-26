@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+# from classifier import save_json
 import os
 
 app = Flask(__name__)
@@ -91,9 +92,14 @@ def modelOutputPage():
     file.save(save_path)
 
     video_url = url_for('uploaded_file', filename=filename)
+    # _, _ = save_json("save_json")
+    print(video_url)
 
     # now pass video_url (a string) to your template
     return render_template('modeloutput.html',
                            video_url=video_url,
                            footworkClass="En Garde",
                            classConfidence=100)
+
+if __name__ == "__main__":
+    app.run(debug=True)

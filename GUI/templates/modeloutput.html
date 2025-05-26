@@ -1,49 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fencing Coaching AI - Enhance your fencing skills with personalized coaching powered by AI.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fencing Coaching AI - Enhance your fencing skills with personalized coaching powered by AI."
+    />
     <title>Lunge and Learn</title>
-    <link rel="stylesheet" href="../static/styles/stylesheet.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../static/styles/stylesheet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
     <header>
-        <div class="identifier">
-        <img src="../static/resources/Lunge and learn Logo.png" width="500px" alt="Lunge and Learn Logo" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index">About</a></li>
-                <li><a href="blog">Blog</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="login">Login</a></li>
-            </ul>
-        </nav>
+      <div class="identifier">
+        <img
+          src="../static/resources/Lunge and learn Logo.png"
+          width="500px"
+          alt="Lunge and Learn Logo"
+          class="logo"
+        />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index">About</a></li>
+          <li><a href="blog">Blog</a></li>
+          <li><a href="contact">Contact</a></li>
+          <li><a href="login">Login</a></li>
+        </ul>
+      </nav>
     </header>
     <main>
-        <section class="modeloutput">
-            <h1>Model Output</h1>
-            <p>Your video has been successfully processed! Here are the results:</p>
-            <div class="output-container">
-                <video id="output-video" src="{{ video_url }}" controls>
-                Your browser does not support the video tag.
-                </video>
-                <div class="output-info">
-                    <h2>Analysis Results</h2>
-                    <ul>
-                        <li>Footwork Type: {{footworkClass}}</li>
-                        <li>Confidence: {{classConfidence}}%</li>
-                </ul>
-                </div>
-            </div>
-        </section>
+      <section class="modeloutput">
+        <h1>Model Output</h1>
+        <p>Your video has been successfully processed! Here are the results:</p>
+        <div class="output-container">
+          <video id="output-video" src="{{ video_url }}" controls>
+            Your browser does not support the video tag.
+          </video>
+          <div class="output-info">
+            <h2>Analysis Results</h2>
+            <ul>
+              <li>Footwork Type: {{footworkClass}}</li>
+              <li>Confidence: {{classConfidence}}%</li>
+            </ul>
+          </div>
+        </div>
+        <h2>Prediction Confidence Visualization</h2>
+        <canvas id="predictionChart" width="500" height="300"></canvas>
+        <br />
+        <h2>Prediction Over Time</h2>
+        <canvas id="timelineChart" width="800" height="300"></canvas>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2025 Blade Trackers. All rights reserved.</p>
-        <a href="https://github.com/Mukundks2004">Mukund</a>
-        <a href="https://github.com/happyshoelace">Bianca</a>
-        <a href="https://github.com/GammaKing2000">Adit</a>
+      <p>&copy; 2025 Blade Trackers. All rights reserved.</p>
+      <a href="https://github.com/Mukundks2004">Mukund</a>
+      <a href="https://github.com/happyshoelace">Bianca</a>
+      <a href="https://github.com/GammaKing2000">Adit</a>
     </footer>
-</body>
+    <script src="../static/scripts/predictionConfidence.js"></script>
+    <script src="../static/scripts/predictionTimeline.js"></script>
+  </body>
 </html>
