@@ -36,12 +36,13 @@ navigator.mediaDevices.getUserMedia({
         mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, {type: "video/webm"});
             const file = new File([blob], "recording.webm", {type: "video/webm"});
-            // console.log(blob);
-            // console.log(file);
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            document.getElementById('recorded-video').files = dt.files;
+            // Optionally trigger a change event:
+            document.getElementById('recorded-video').dispatchEvent(new Event('change'));
+
             trimVideo(file);
-            // const dt = new DataTransfer();
-            // dt.items.add(file);
-            // recordedFile.files = dt.files;
     
             // document.getElementById('video-file').value = '';
             // uploadButton.disabled = false;

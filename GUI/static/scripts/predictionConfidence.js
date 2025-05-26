@@ -1,45 +1,54 @@
-const labels = ["Fleche", "Lunge", "En Garde", "Step"];
-const initialData = [0.5, 0.2, 0.8, 0.1];
+const labels = ["En Garde", "Fleche", "Lunge", "Step"]; // Match backend order!
+const allPredictions = window.all_predictions || [];
 
-const confidenceContext = document.getElementById("predictionChart");
+if (allPredictions.length === 0) {
+  // fallback
+  renderChart([0, 0, 0, 0]);
+} else {
+  // Sum up the predictions for each class
+  const classTotals = [0, 0, 0, 0];
+  allPredictions.forEach((arr) => {
+    arr.forEach((val, idx) => {
+      classTotals[idx] += val;
+    });
+  });
 
-const myChart = new Chart(confidenceContext, {
-  type: "bar",
-  data: {
-    labels: labels,
-    datasets: [
-      {
-        label: "Confidence",
-        data: initialData,
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-        barPercentage: 1.0,
-        categoryPercentage: 1.0,
-      },
-    ],
-  },
-  options: {
-    animation: {
-      duration: 800,
+  // Normalize to percentage
+  const totalFrames = allPredictions.length;
+  const classPercentages = classTotals.map((count) => (count / totalFrames) * 100);
+
+  renderChart(classPercentages);
+}
+
+function renderChart(data) {
+  const confidenceContext = document.getElementById("predictionChart");
+  new Chart(confidenceContext, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Prediction Confidence (%)",
+          data: data,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.5)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(75, 192, 192, 0.5)",
+          ],
+        },
+      ],
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        min: 0,
-        title: {
-          display: true,
-          text: "Confidence (%)",
+    options: {
+      animation: { duration: 800 },
+      scales: {
+        y: {
+          beginAtZero: true,
+          min: 0,
+          max: 100,
+          title: { display: true, text: "Confidence (%)" },
         },
       },
     },
-  },
-});
-
-function updateChart(fleche, lunge, enGarde, step) {
-  const inputs = [fleche, lunge, enGarde, step];
-  myChart.data.datasets[0].data = inputs;
-  myChart.update();
+  });
 }
-
-updateChart(0.9, 0.05, 0.02, 0.03);

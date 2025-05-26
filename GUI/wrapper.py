@@ -10,7 +10,7 @@ from classifier import (save_json,
 def video_name_to_predictions(video_name, hand):
     # save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
     save_json("./static/uploads", video_name, hand, "./static/uploads")
-    new_name = video_name + ".json"
+    new_name = f"{video_name.split('/')[-1].split('.')[0]}.json"
 
     remove_facial_keypoints_single_json(os.path.join("./static/uploads", new_name))
 

@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Video...</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/stylesheet.css') }}">
+</head>
+<body class="loading-page">
+    <div class="loader-container">
+        <h1>Processing Your Video</h1>
+        <p>Please wait, this may take a few moments...</p>
+        <div class="loader"></div>
+        <p id="status-message">Initializing processing...</p>
+    </div>
+
+    <div id="loading-video-container" style="margin-top: 32px;">
+        <video id="loading-video" autoplay loop muted playsinline style="max-width: 90vw; max-height: 300px; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
+            <source src="{{ url_for('static', filename='resources/Loading screen video.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag or the video format is not supported.
+        </video>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const jobId = params.get('job_id');
+            const statusMessageEl = document.getElementById('status-message');
+            const loadingVideoEl = document.getElementById('loading-video');
+            const loadingVideoContainerEl = document.getElementById('loading-video-container');
+
+            // Gracefully hide video container if video fails to load or source is missing
+            loadingVideoEl.onerror = function() {
+                console.warn('Loading video failed to load or source is incorrect.');
+                loadingVideoContainerEl.style.display = 'none';
+            };
+            // Check if a valid source is set (simple check)
+            let hasValidSource = false;
+            const sources = loadingVideoEl.getElementsByTagName('source');
+            for (let i = 0; i < sources.length; i++) {
+                if (sources[i].src && !sources[i].src.endsWith('/None')) { // Check for Flask's url_for returning None
+                    hasValidSource = true;
+                    break;
+                }
+            }
+            if (!hasValidSource && loadingVideoEl.src && !loadingVideoEl.src.endsWith('/None')) { // Check direct src attribute
+                 hasValidSource = true;
+            }
+            if (!hasValidSource) {
+                 console.warn('No valid source found for loading video.');
+                 loadingVideoContainerEl.style.display = 'none';
+            }
+
+
+            if (!jobId) {
+                statusMessageEl.textContent = 'Error: No job ID provided. Cannot track processing status.';
+                // Optionally redirect back or show a more prominent error
+                // e.g., window.location.href = "{{ url_for('modelVideoInputPage') }}";
+                return;
+            }
+
+            function pollStatus() {
+                fetch(`/processing_status/${jobId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            // Try to get error message from server if available
+                            return response.json().then(errData => {
+                                throw new Error(`HTTP error! status: ${response.status}, message: ${errData.error || 'Server error'}`);
+                            }).catch(() => {
+                                // Fallback if response is not JSON or no error message
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'complete') {
+                            statusMessageEl.textContent = 'Processing complete! Redirecting to results...';
+                            const resultsData = data.data;
+                            const queryParams = new URLSearchParams({
+                                video_url: resultsData.video_url,
+                                footworkClass: resultsData.footworkClass,
+                                classConfidence: resultsData.classConfidence,
+                                all_predictions_json: JSON.stringify(resultsData.all_predictions_json)
+                            }).toString();
+                            window.location.href = `{{ url_for('model_output_display_page') }}?${queryParams}`;
+                        } else if (data.status === 'processing') {
+                            statusMessageEl.textContent = 'Still processing... please wait.';
+                            setTimeout(pollStatus, 3000); // Poll every 3 seconds
+                        } else if (data.status === 'error') {
+                            statusMessageEl.textContent = `Error during processing: ${data.message || 'Unknown error'}. Please try uploading again.`;
+                            // Optionally offer a link to go back
+                            // e.g., add a link: <a href="{{ url_for('modelVideoInputPage') }}">Try again</a>
+                        } else {
+                             statusMessageEl.textContent = `Unknown status received: ${data.status || 'N/A'}. Retrying...`;
+                             setTimeout(pollStatus, 5000); // Wait longer for unknown status
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error polling status:', error);
+                        statusMessageEl.textContent = 'Error checking status. Please check your network connection or try again later.';
+                        // You might want to stop polling after several errors or offer a manual refresh/retry option
+                        // setTimeout(pollStatus, 7000); // Optional: retry on network error with longer delay
+                    });
+            }
+
+            pollStatus(); // Start polling
+        });
+    </script>
+</body>
+</html>

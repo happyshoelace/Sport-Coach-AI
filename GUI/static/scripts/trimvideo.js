@@ -19,11 +19,12 @@ export function trimVideo(inputFile) {
             console.log('Video Source:', videoSrc);
             
             if (videoSrc) {
-                const dt = new DataTransfer();
                 const trimmedFile = new File([videoSrc], "trimmed_recording.webm", { type: "video/webm" });
+                const dt = new DataTransfer();
                 dt.items.add(trimmedFile);
-                document.getElementById('recorded-video').files = dt.files;
-                
+                document.getElementById('video-file').files = dt.files;
+                document.getElementById('video-file').dispatchEvent(new Event('change'));
+
                 // Store trim points if they exist
                 if (transformations && transformations.time) {
                     document.getElementById('video-trim-start').value = transformations.time.in || 0;

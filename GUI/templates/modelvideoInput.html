@@ -38,7 +38,7 @@
         <div class="video-upload">
         <h2>Or upload your video</h2>
 
-        <form id="video-upload-form" enctype="multipart/form-data", action="/feedback" method="POST">
+        <form id="video-upload-form" enctype="multipart/form-data">
             <input type="file" id="video-file" name='file' accept="video/*">
             <br>
             <input type="file" id="recorded-video" name="file" style="display:none;">
@@ -76,15 +76,83 @@
 </footer>
 </body>
 </html>
-<script type="module" src="../static/scripts/record.js"></script>
+<script type="module" src="{{ url_for('static', filename='scripts/record.js') }}"></script>
 <script type="module">
-  import { trimVideo } from './static/scripts/trimvideo.js';
+  import { trimVideo } from "{{ url_for('static', filename='scripts/trimvideo.js') }}";
 
   const fileInput = document.getElementById('video-file');
+  const uploadButton = document.getElementById('upload-button');
+
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
       trimVideo(file);
+      uploadButton.disabled = false;
+    } else {
+      uploadButton.disabled = true;
     }
   });
+
+  // Enable upload if a recorded video is present
+  const recordedVideoInput = document.getElementById('recorded-video');
+  recordedVideoInput.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      uploadButton.disabled = false;
+    }
+  });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const videoUploadForm = document.getElementById('video-upload-form');
+    const uploadButton = document.getElementById('upload-button');
+    const fileInput = document.getElementById('video-file');
+    const recordedVideoInput = document.getElementById('recorded-video');
+
+    videoUploadForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        uploadButton.disabled = true;
+        uploadButton.textContent = 'Uploading...';
+
+        const formData = new FormData();
+        let videoFile = null;
+
+        // Prefer trimmed/uploaded file, fallback to recorded
+        if (fileInput.files && fileInput.files[0]) {
+            videoFile = fileInput.files[0];
+        } else if (recordedVideoInput.files && recordedVideoInput.files[0]) {
+            videoFile = recordedVideoInput.files[0];
+        }
+
+        if (!videoFile) {
+            alert('No video file selected or recorded. Please select or record a video.');
+            uploadButton.disabled = false;
+            uploadButton.textContent = 'Upload Your Video';
+            return;
+        }
+
+        formData.append('file', videoFile);
+
+        try {
+            const response = await fetch("{{ url_for('initiate_processing_route') }}", {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+
+            if (response.ok && result.job_id) {
+                window.location.href = "{{ url_for('loading_page_route') }}?job_id=" + result.job_id;
+            } else {
+                alert('Error starting processing: ' + (result.error || 'Unknown server error. Please try again.'));
+                uploadButton.disabled = false;
+                uploadButton.textContent = 'Upload Your Video';
+            }
+        } catch (error) {
+            console.error('Error submitting video:', error);
+            alert('Error submitting video. Check console for details and try again.');
+            uploadButton.disabled = false;
+            uploadButton.textContent = 'Upload Your Video';
+        }
+    });
+});
 </script>

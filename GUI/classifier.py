@@ -46,10 +46,13 @@ def isolate_largest_person(image: np.ndarray) -> np.ndarray:
     return isolated
 
 def save_json(input_base_path, file_name, dominant_hand, output_base_path):
+    print(f"Processing video: {file_name} with dominant hand: {dominant_hand}")
+    print(f"Input path: {input_base_path}, Output path: {output_base_path}")
     # --- CONFIGURE THESE ---
-    video_path = os.path.join(input_base_path, file_name)
+    video_path = os.path.join(input_base_path, file_name.split('/')[-1])
     output_folder = output_base_path
-    output_file = f"{file_name}.json"
+    output_file = f"{file_name.split('/')[-1].split('.')[0]}.json"
+    print(f"Output file will be saved as: {output_file}")
     # -----------------------
 
     os.makedirs(output_folder, exist_ok=True)

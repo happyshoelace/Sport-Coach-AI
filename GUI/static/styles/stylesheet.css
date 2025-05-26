@@ -617,3 +617,40 @@ video{
     box-shadow: none;
 
 }
+
+/* Loader styles for loading.html and other pages */
+.loader {
+    border: 12px solid var(--secondary-silver, #CDCDCD);
+    border-top: 12px solid var(--accent-red, #C4322D);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* General layout for loading page */
+body.loading-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--primary-white, #DFF8EB);
+    text-align: center;
+    font-family: var(--font-family, "National Park", sans-serif);
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.loader-container {
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
