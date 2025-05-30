@@ -21,6 +21,7 @@ export function trimVideo(inputFile) {
             if (videoSrc) {
                 const dt = new DataTransfer();
                 const trimmedFile = new File([videoSrc], "trimmed_recording.webm", { type: "video/webm" });
+                console.log(trimmedFile.name);
                 dt.items.add(trimmedFile);
                 document.getElementById('recorded-video').files = dt.files;
                 

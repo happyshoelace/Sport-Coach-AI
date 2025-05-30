@@ -76,13 +76,22 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/feedback', methods=['POST'])
+@app.route('/feedback', methods=['GET','POST'])
 def modelOutputPage():
-    if 'file' not in request.files:
+    if request.method == 'GET':
+        print("GET request")
+        return redirect(url_for('modelInputHandPage'))
+    print(request.files)
+    if 'fileV' in request.files and request.files['fileV'].filename != '':
+        file = request.files['fileV']
+    elif 'fileR' in request.files and request.files['fileR'].filename != '':
+        file = request.files['fileR']
+    else:
+        print("No file uploaded")
         # handle missing file…
         return redirect(url_for('modelVideoInputPage'))
-    file = request.files['file']
     if file.filename == '':
+        print("Empty filename")
         # handle empty filename…
         return redirect(url_for('modelVideoInputPage'))
 
@@ -95,15 +104,21 @@ def modelOutputPage():
 
     # don't have to provide hand
     probability, index, total_frame_predictions = video_name_to_predictions(video_url, dominant_hand)
+    for x, i in enumerate(total_frame_predictions):
+        print(x, i)
+        print(total_frame_predictions[x])
     classes = ["En Garde", "Fleche", "Lunge", "Step"]
-    print(video_url)
 
     # now pass video_url (a string) to your template
     return render_template('modeloutput.html',
                            video_url=video_url,
                            footworkClass=classes[index],
-                           classConfidence=probability,
-                           all_predictions=total_frame_predictions)
+                           classConfidence=probability*100,
+                           all_predictions=total_frame_predictions,
+                           enGardeConfidence=total_frame_predictions[0][0],
+                           flecheConfidence=total_frame_predictions[0][1],
+                           lungeConfidence=total_frame_predictions[0][2],
+                           stepConfidence=total_frame_predictions[0][3])
 
 if __name__ == "__main__":
     app.run(debug=True)

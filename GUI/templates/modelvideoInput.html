@@ -39,9 +39,9 @@
         <h2>Or upload your video</h2>
 
         <form id="video-upload-form" enctype="multipart/form-data", action="/feedback" method="POST">
-            <input type="file" id="video-file" name='file' accept="video/*">
+            <input type="file" id="video-file" name='fileV' accept="video/*">
             <br>
-            <input type="file" id="recorded-video" name="file" style="display:none;">
+            <input type="file" id="recorded-video" name="fileR" style="display:none;">
             <input type="hidden" id="video-trim-start" name="video-trim-start" style="display:none;">
             <input type="hidden" id="video-trim-end" name="video-trim-end" style="display:none;">
             <div id="editor-container"></div>

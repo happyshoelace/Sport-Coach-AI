@@ -65,5 +65,10 @@
     </footer>
     <script src="../static/scripts/predictionConfidence.js"></script>
     <script src="../static/scripts/predictionTimeline.js"></script>
+    <script>
+
+// Ignore the errors, it works bc jinja magic
+updateChart({{ enGardeConfidence }}, {{ flecheConfidence }}, {{ lungeConfidence }}, {{ stepConfidence }});
+    </script>
   </body>
 </html>

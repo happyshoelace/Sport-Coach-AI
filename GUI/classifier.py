@@ -37,7 +37,7 @@ def isolate_largest_person(image: np.ndarray) -> np.ndarray:
     best = persons[int(np.argmax(areas))]
     x1, y1, x2, y2 = map(int, best.xyxy[0].cpu().tolist())
 
-    # Create a mask that’s white inside the box, black outside
+    # Create a mask that's white inside the box, black outside
     mask = np.zeros_like(image, dtype=np.uint8)
     mask[y1:y2, x1:x2] = 255
 
@@ -53,6 +53,8 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
     # -----------------------
 
     os.makedirs(output_folder, exist_ok=True)
+    print(f"Output folder: {output_folder}")
+
 
     cap = cv2.VideoCapture(video_path)
     frame_data = []
@@ -87,9 +89,12 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
         frame_idx += 1
 
     cap.release()
-    pose.close()
+    print(f"Directory exists: {os.path.exists(output_folder)}")
+
+    print(f"Output folder: {output_folder}, Output file: {output_file}")
 
     output_path = os.path.join(output_folder, output_file)
+    print(f"Output path: {output_path}, {os.path.exists(output_path)}, Filename: {output_file}")
     with open(output_path, 'w') as f:
         json.dump(frame_data, f, indent=2)
 
