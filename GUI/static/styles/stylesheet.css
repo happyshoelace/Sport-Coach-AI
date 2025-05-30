@@ -654,3 +654,34 @@ body.loading-page {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+
+/* Center the main content and graphs */
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 900px;
+}
+.centered-content .output-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.centered-content h2,
+.centered-content ul {
+    text-align: center;
+}
+
+.modeloutput .output-container {
+  width: 100%;
+  /* Remove or comment out any max-width here if present */
+}
+
+.modeloutput .output-container video.full-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 90vh; /* ensures it never exceeds viewport height */
+}

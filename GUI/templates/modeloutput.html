@@ -31,12 +31,16 @@
       </nav>
     </header>
     <main>
-      <section class="modeloutput">
+      <section class="modeloutput centered-content">
         <h1>Model Output</h1>
         {% if video_url %}
         <p>Your video has been successfully processed! Here are the results:</p>
-        <div class="output-container">
-          <video id="output-video" src="{{ video_url }}" controls>
+        <div class="output-container" style="width: 100%;">
+            <video
+            id="output-video"
+            src="{{ video_url }}"
+            controls
+            class="full-video">
             Your browser does not support the video tag.
           </video>
           <div class="output-info">

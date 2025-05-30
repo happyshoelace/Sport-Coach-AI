@@ -6,10 +6,10 @@ const ctx = document.getElementById("timelineChart").getContext("2d");
 // Get the predicted class index for each frame
 const predictedClassIndices = timelineData.map(arr => arr.indexOf(Math.max(...arr)));
 
-// Prepare data for scatter plot
+// Prepare data for scatter plot (y as class name)
 const scatterData = predictedClassIndices.map((classIdx, frameIdx) => ({
   x: frameIdx + 1,
-  y: classIdx
+  y: classes[classIdx] // Use class name for y
 }));
 
 const timelineChart = new Chart(ctx, {
@@ -28,7 +28,7 @@ const timelineChart = new Chart(ctx, {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (ctx) => `Frame ${ctx.parsed.x}: ${classes[ctx.parsed.y]}`,
+          label: (ctx) => `Frame ${ctx.parsed.x}: ${ctx.parsed.y}`,
         },
       },
     },
@@ -41,14 +41,9 @@ const timelineChart = new Chart(ctx, {
         ticks: { stepSize: 1, precision: 0 }
       },
       y: {
-        type: "linear",
+        type: "category",
         title: { display: true, text: "Class" },
-        min: -0.5,
-        max: classes.length - 0.5,
-        ticks: {
-          stepSize: 1,
-          callback: (val) => classes[val] || "",
-        },
+        labels: classes
       },
     },
   },
