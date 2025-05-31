@@ -4,6 +4,7 @@ import threading
 import uuid
 from flask import current_app
 import os
+import json
 
 app = Flask(__name__)
 
@@ -131,11 +132,13 @@ def modelOutputPage():
     print(video_url)
 
     # now pass video_url (a string) to your template
-    return render_template('modeloutput.html',
-                           video_url=video_url,
-                           footworkClass=classes[index],
-                           classConfidence=probability,
-                           all_predictions=total_frame_predictions)
+    return render_template(
+        'modeloutput.html',
+        video_url=url_for('uploaded_file', filename='output.mp4'),
+        footworkClass=classes[index],
+        classConfidence=probability,
+        all_predictions_json_str=json.dumps(total_frame_predictions.tolist())
+    )
 
 @app.route('/initiate_processing', methods=['POST'])
 def initiate_processing_route():

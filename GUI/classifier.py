@@ -26,7 +26,7 @@ def isolate_largest_person(image: np.ndarray) -> np.ndarray:
     # Run inference
     results = yolo(image)[0]  # first frame of batch
 
-    # Filter to only class 'person' (usually class 0)
+    # Filter to only class 'person' ( class 0)
     persons = [box for box in results.boxes if int(box.cls) == 0]
     if not persons:
         return image  # no person found, fallback to original
@@ -61,6 +61,15 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
     frame_data = []
     frame_idx = 0
 
+    # --- VideoWriter setup ---
+    fourcc = cv2.VideoWriter_fourcc(*'VP80')  # VP8 codec for webm
+    fps = cap.get(cv2.CAP_PROP_FPS) or 25
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    output_video_path = os.path.join(output_folder, "recording.webm")  # Save as webm
+    out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
+    # -------------------------
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -81,15 +90,25 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
                     'visibility': lm.visibility
                 })
 
+            # Optionally, draw pose landmarks on the frame for visualization
+            mp.solutions.drawing_utils.draw_landmarks(
+                frame, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS
+            )
+
         frame_data.append({
             'frame': frame_idx,
             'keypoints': keypoints,
             'dominantHand': dominant_hand
         })
 
+        # --- Write processed frame to output video ---
+        out.write(frame)
+        # --------------------------------------------
+
         frame_idx += 1
 
     cap.release()
+    out.release()  # Don't forget to release the VideoWriter!
     pose.close()
 
     output_path = os.path.join(output_folder, output_file)
@@ -97,6 +116,7 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
         json.dump(frame_data, f, indent=2)
 
     print(f"Processing complete. JSON saved to: {output_path}")
+    print(f"Processed video saved to: {output_video_path}")
 
 
 import json
