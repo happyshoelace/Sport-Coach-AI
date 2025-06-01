@@ -3,3 +3,6 @@
 *.pt
 *.pyc
 tf_env/
+venv/
+GUI/venv/
+/static/uploads

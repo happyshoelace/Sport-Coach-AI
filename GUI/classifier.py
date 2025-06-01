@@ -66,7 +66,7 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
     fps = cap.get(cv2.CAP_PROP_FPS) or 25
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    output_video_path = os.path.join(output_folder, "recording.webm")  # Save as webm
+    output_video_path = os.path.join(output_folder, f"{file_name}_annotated.webm")  # Save as webm
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
     # -------------------------
 
@@ -534,6 +534,5 @@ def get_prediction_probability_and_index(probs):
     """
     avg_probs = np.mean(probs, axis=0)  # average over frames
     result = int(np.argmax(avg_probs))
-    avg_probs = np.mean(probs, axis=0)
     # FIRST is prob eg 90% SECOND is index eg 2
     return float(np.max(avg_probs)), result

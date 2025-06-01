@@ -29,6 +29,8 @@ def video_name_to_predictions(video_name, hand):
 
     probability, index = get_prediction_probability_and_index(total_frame_predictions)
 
+    print("prob", probability, "ind", index)
+
     print("Done!", probability)
 
     return probability, index, total_frame_predictions

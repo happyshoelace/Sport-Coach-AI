@@ -29,13 +29,13 @@ def process_video_background(job_id, video_server_path, filename_only, hand_for_
             probability, index, total_frame_predictions = video_name_to_predictions(filename_only, hand_for_job)
             classes = ["En Garde", "Fleche", "Lunge", "Step"]
             results_data = {
-                'video_url': f"/uploads/{filename_only}",
+                'video_url': f"/uploads/{filename_only}_annotated.webm",
                 'footworkClass': classes[index],
                 'classConfidence': float(probability),
                 'all_predictions_json': total_frame_predictions.tolist()
             }
             jobs[job_id] = {'status': 'complete', 'data': results_data}
-            print(f"Job {job_id} completed. Results: {results_data}")
+            # print(f"Job {job_id} completed. Results: {results_data}")
         except Exception as e:
             print(f"Error during background processing for job {job_id}: {e}")
             import traceback
