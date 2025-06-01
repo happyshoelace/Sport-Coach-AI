@@ -5,7 +5,7 @@ from classifier import (save_json,
                         process_single_json_sequence, 
                         fill_and_prune_single_json, 
                         predict_windows_from_json,
-                        process_single_json_with_angles_in_place, get_prediction_probability_and_index)
+                        process_single_json_with_angles_in_place, get_prediction_probability_and_index, process_video)
 
 def video_name_to_predictions(video_name, hand):
     # save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
@@ -32,5 +32,9 @@ def video_name_to_predictions(video_name, hand):
     print("prob", probability, "ind", index)
 
     print("Done!", probability)
+
+    process_video(os.path.join("./static/uploads", video_name), os.path.join("./static/uploads", video_name + "_angles"), new_name)
+
+    print("Saved vid") 
 
     return probability, index, total_frame_predictions

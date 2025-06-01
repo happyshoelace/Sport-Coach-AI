@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import datetime
+from poseCorrection import poseCorrection
 
 # 1) Load your YOLO model once
 yolo = YOLO('yolov8n.pt')  # or 'yolov5n.pt'
@@ -538,3 +539,91 @@ def get_prediction_probability_and_index(probs):
     result = int(np.argmax(avg_probs))
     # FIRST is prob eg 90% SECOND is index eg 2
     return float(np.max(avg_probs)), result
+
+import math
+
+def draw_angle_arc(frame, ptA, ptB, ptC, angle_value, color, radius=50):
+    """
+    Draws an arc representing the angle between three points on the frame.
+    ptB is the vertex point (joint).
+    """
+    # Convert normalized points (0-1) to pixel coordinates
+    def denorm(pt):
+        return int(pt.x * frame.shape[1]), int(pt.y * frame.shape[0])
+    
+    a = denorm(ptA)
+    b = denorm(ptB)
+    c = denorm(ptC)
+    
+    # Calculate angle direction
+    angle_rad = math.radians(angle_value)
+    
+    # Draw the angle arc
+    cv2.ellipse(
+        frame,
+        b,  # center
+        (radius, radius),
+        0,  # no rotation
+        0,
+        angle_value,
+        color,
+        2
+    )
+
+def process_video(input_path, output_path, pose_data):
+    # Open the input video
+    cap = cv2.VideoCapture(input_path)
+    if not cap.isOpened():
+        print("Error: Cannot open video file.")
+        return
+
+    # Get video properties
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    # Define the codec and create VideoWriter object
+    fourcc = cv2.VideoWriter_fourcc(*'VP80')  # 'XVID' or 'mp4v' for .mp4 files
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+
+    frame_number = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        keypoints = pose_data[frame_number]["keypoints"]
+        if len(keypoints) == 22:
+            # Draw all keypoints
+            for pt in keypoints:
+                cv2.circle(frame, (int(pt[0]), int(pt[1])), 3, (255, 0, 0), -1)
+
+            # Example: calculate angle at the elbow
+            # Let's say point 5 (shoulder), 6 (elbow), 7 (wrist)
+            a, b, c = keypoints[5], keypoints[6], keypoints[7]
+            angle = calculate_angle(a, b, c)
+            draw_angle_arc(frame, b, angle, radius=25, color=(0, 255, 255))
+
+        out.write(frame)
+        frame_number += 1
+
+    cap.release()
+    out.release()
+    print("Video processing complete and saved to", output_path)
+
+def calculate_angle(a, b, c):
+    """Calculate angle (in degrees) at point b between a and c."""
+    ba = [a[0] - b[0], a[1] - b[1]]
+    bc = [c[0] - b[0], c[1] - b[1]]
+    cosine_angle = (ba[0]*bc[0] + ba[1]*bc[1]) / (math.hypot(*ba) * math.hypot(*bc) + 1e-6)
+    angle = math.acos(min(1.0, max(-1.0, cosine_angle)))  # Clamp to avoid NaN
+    return math.degrees(angle)
+
+def draw_angle_arc(frame, center, angle, radius=30, color=(0, 255, 0), thickness=2):
+    """Draw an arc to visualize the angle at a joint."""
+    x, y = int(center[0]), int(center[1])
+    start_angle = -angle / 2
+    end_angle = angle / 2
+    # Draw arc from -angle/2 to +angle/2
+    cv2.ellipse(frame, (x, y), (radius, radius), 0, start_angle, end_angle, color, thickness)
