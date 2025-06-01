@@ -14,8 +14,7 @@ import datetime
 
 # 1) Load your YOLO model once
 yolo = YOLO('yolov8n.pt')  # or 'yolov5n.pt'
-mp_pose = mp.solutions.pose
-pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5, static_image_mode=False)
+
 
 def isolate_largest_person(image: np.ndarray) -> np.ndarray:
     """
@@ -46,6 +45,9 @@ def isolate_largest_person(image: np.ndarray) -> np.ndarray:
     return isolated
 
 def save_json(input_base_path, file_name, dominant_hand, output_base_path):
+    mp_pose = mp.solutions.pose
+    pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5, static_image_mode=False)
+
     print(f"Processing video: {file_name} with dominant hand: {dominant_hand}")
     print(f"Input path: {input_base_path}, Output path: {output_base_path}")
     # --- CONFIGURE THESE ---

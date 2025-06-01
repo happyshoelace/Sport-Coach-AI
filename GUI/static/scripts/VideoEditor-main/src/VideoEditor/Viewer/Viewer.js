@@ -1,6 +1,10 @@
-import axios from 'axios';
-import { getMaxHeightPercent, calcViewerMaxWidth, calcTransformValues } from './utils';
-import { createElement } from '../utils';
+import axios from "axios";
+import {
+  getMaxHeightPercent,
+  calcViewerMaxWidth,
+  calcTransformValues,
+} from "./utils";
+import { createElement } from "../utils";
 /**
  * Video Viewer
  *
@@ -8,7 +12,14 @@ import { createElement } from '../utils';
  * It's parent is the VideoEditor class.
  */
 class Viewer {
-  constructor({ src, maxHeight, loader, onLoad, onLoadMetaData, onViewerResize }) {
+  constructor({
+    src,
+    maxHeight,
+    loader,
+    onLoad,
+    onLoadMetaData,
+    onViewerResize,
+  }) {
     this.src = src;
     this.maxHeight = maxHeight;
     this.maxHeightPercent = 0.6;
@@ -45,20 +56,23 @@ class Viewer {
     if (this.video.videoWidth == 0 || this.video.videoHeight == 0) {
       this.handleError(
         new Error(
-          'We were unable to load the video. It may be corrupted, or your browser may not support this video format. Please try another video or browser'
+          "We were unable to load the video. It may be corrupted, or your browser may not support this video format. Please try another video or browser"
         )
       );
       return;
     }
     if (!isFinite(this.video.duration)) {
-      console.error('durationchange: duration is infinity', this.video.duration);
+      console.error(
+        "durationchange: duration is infinity",
+        this.video.duration
+      );
       return;
     }
     // console.info('durationchange', this.video.duration);
     this.video.pause();
     this.video.currentTime = 0;
     this.video.playbackRate = 1;
-    console.info('%cRender Timeline', 'color:green');
+    console.info("%cRender Timeline", "color:green");
     // fire onLoad callback
     if (this.onLoad instanceof Function) {
       this.onLoad();
@@ -109,7 +123,7 @@ class Viewer {
     if (this.onError instanceof Function) {
       this.onError(error);
     } else {
-      if (error.name === 'AxiosError') {
+      if (error.name === "AxiosError") {
         /**
          * ince video editor already shows an error message in the handle axios error method,
          * we don't need to display an error modal as well
@@ -137,11 +151,11 @@ class Viewer {
       axiosError.statusText = response?.statusText;
       axiosError.status = response?.status;
     }
-    axiosError.name = 'AxiosError';
+    axiosError.name = "AxiosError";
     this.handleError(axiosError);
   }
   removeEvents() {
-    this.video.removeEventListener('durationchange', this.handleDurationChange);
+    this.video.removeEventListener("durationchange", this.handleDurationChange);
     this.video.onloadedmetadata = null;
   }
 
@@ -153,21 +167,24 @@ class Viewer {
   async getURLObjectString() {
     let src = this.src;
     const isBlob = src instanceof Blob;
-    const isUrl = typeof src == 'string' && src?.startsWith('http');
+    const isUrl = typeof src == "string" && src?.startsWith("http");
     // Validate video src
     if (!isBlob && !isUrl) {
-      throw new TypeError('video src must be a Blob or url, found ' + typeof src);
+      throw new TypeError(
+        "video src must be a Blob or url, found " + typeof src
+      );
     }
     // if src is a url, download the video
     if (isUrl) {
       src = await axios(src, {
         onDownloadProgress: this.handleVideoDownloadProgress.bind(this),
-        responseType: 'blob',
+        responseType: "blob",
       })
         .then((res) => {
           if (res.data.type && !/video/.test(res.data.type)) {
             throw new TypeError(
-              'Video src type was invalid. Expected video but found: ' + res.data.type
+              "Video src type was invalid. Expected video but found: " +
+                res.data.type
             );
           }
           return res?.data;
@@ -176,7 +193,7 @@ class Viewer {
     }
     if (src) {
       this.videoSrc = src;
-      this.mimeType = src.type || 'unknown';
+      this.mimeType = src.type || "unknown";
       const blob = window.URL.createObjectURL(src);
       return blob;
     }
@@ -197,14 +214,15 @@ class Viewer {
     let height = this.crop?.height || this.video.videoHeight;
     // aspect ratio of video (or crop)
     const aspectRatio = height / width;
-    const vidWrap = this.video.closest('.video-wrap');
-    const vidContainer = this.video.closest('.video-container');
+    const vidWrap = this.video.closest(".video-wrap");
+    const vidContainer = this.video.closest(".video-container");
     const vidMaxWidth = calcViewerMaxWidth(
       this.video,
       this.maxHeight,
       this.maxHeightPercent,
       aspectRatio
     );
+    console.log("max width", vidMaxWidth);
     // set max width of video container
     vidContainer.style.width = `${vidMaxWidth}px`;
     // set aspect ratio of video wrap
@@ -234,8 +252,8 @@ class Viewer {
     this.handleDurationChange = (event) => {
       handleDuration(event, container);
     };
-    this.video.addEventListener('durationchange', this.handleDurationChange);
-    this.video.addEventListener('loadedmetadata', this.handleLoadedMetaData);
+    this.video.addEventListener("durationchange", this.handleDurationChange);
+    this.video.addEventListener("loadedmetadata", this.handleLoadedMetaData);
   }
 
   /**
@@ -248,10 +266,10 @@ class Viewer {
    * recalculate the primary ancestor (video container) dimensions
    */
   attachResizeEvent() {
-    const vidContainerFlexbox = this.video.closest('.video-flexbox-container');
-    const vidContainer = this.video.closest('.video-wrap');
+    const vidContainerFlexbox = this.video.closest(".video-flexbox-container");
+    const vidContainer = this.video.closest(".video-wrap");
     // define the event here so we keep vidContainerFlexbox and vidContainer in scope
-    window.addEventListener('resize', (event) => {
+    window.addEventListener("resize", (event) => {
       // keep track of previous video bounds
       const videoBounds = this.video.getBoundingClientRect();
 
@@ -269,38 +287,38 @@ class Viewer {
    * @returns {HTMLVideoElement} - returns a video element
    */
   createVideo() {
-    return createElement('video', {
+    return createElement("video", {
       properties: {
-        id: 'video-preview',
-        className: 'preview',
+        id: "video-preview",
+        className: "preview",
         autoplay: false,
         playsinline: true,
-        preload: 'metadata',
+        preload: "metadata",
         controls: false,
         playbackRate: 16,
       },
       style: {
-        width: '100%',
+        width: "100%",
       },
       attributes: {
         playsinline: true,
-        'webkit-playsinline': true,
+        "webkit-playsinline": true,
       },
     });
   }
 
   createCropContainer() {
-    return createElement('div', {
+    return createElement("div", {
       properties: {
-        className: 'crop-container',
+        className: "crop-container",
       },
       style: {
-        position: 'absolute',
+        position: "absolute",
         left: 0,
         top: 0,
         zIndex: 3,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
       },
     });
   }
@@ -315,12 +333,12 @@ class Viewer {
    * @returns {Promise<HTMLDivElement>} - returns a video container
    */
   async createVideoContainer() {
-    const vidContainer = document.createElement('div');
-    vidContainer.className = 'video-container';
-    const vidWrap = document.createElement('div');
-    vidWrap.className = 'video-wrap';
+    const vidContainer = document.createElement("div");
+    vidContainer.className = "video-container";
+    const vidWrap = document.createElement("div");
+    vidWrap.className = "video-wrap";
     // create source tag
-    const source = document.createElement('source');
+    const source = document.createElement("source");
     const src = await this.getURLObjectString();
     if (!src) {
       return;

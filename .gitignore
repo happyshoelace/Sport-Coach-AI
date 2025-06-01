@@ -5,4 +5,4 @@
 tf_env/
 venv/
 GUI/venv/
-/static/uploads
+GUI/static/uploads
