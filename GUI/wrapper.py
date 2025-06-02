@@ -25,7 +25,7 @@ def video_name_to_predictions(video_name, hand):
 
     total_frame_predictions = predict_windows_from_json(
         json_file_path=os.path.join("./static/uploads", new_name),
-        model_path="model.keras"
+        model_path="lunge_correction.keras"
     )
 
     probability, index = get_prediction_probability_and_index(total_frame_predictions)
@@ -33,8 +33,8 @@ def video_name_to_predictions(video_name, hand):
     print("prob", probability, "ind", index)
 
     print("Done!", probability)
-
-    ai_text = process_video(os.path.join("./static/uploads", video_name), os.path.join("./static/uploads", video_name + "_angles.webm"), os.path.join("./static/uploads", new_name + "_Raw.json"), index, "./samples/")
+    ai_text = ""
+    # ai_text = process_video(os.path.join("./static/uploads", video_name), os.path.join("./static/uploads", video_name + "_angles.webm"), os.path.join("./static/uploads", new_name + "_Raw.json"), index, "./samples/")
 
     print("Saved vid") 
 

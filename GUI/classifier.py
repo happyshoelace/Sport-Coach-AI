@@ -78,7 +78,7 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
         if not ret:
             break
 
-        frame = isolate_largest_person(frame)
+        # frame = isolate_largest_person(frame)
 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         pose_results = pose.process(frame_rgb)
@@ -495,7 +495,7 @@ from tensorflow.keras.models import load_model
 
 def predict_windows_from_json(
     json_file_path: str,
-    model_path: str = "model.keras",
+    model_path: str = "lunge_correction.keras",
     window_size: int = 24,
     step: int = 1
 ):
@@ -672,7 +672,7 @@ def process_video(input_path, output_path, pose_path, classification, sample_pat
     print("Video processing complete and saved to", output_path)
 
     try:
-        text = get_ai_feedback(classification, right_knee_difference, right_elbow_difference)
+        text = get_ai_feedback(classification, right_knee_difference, right_elbow_difference, right_hip_difference)
     except Exception as e:
         print(e)
         text = ""
@@ -690,7 +690,7 @@ def calculate_angle(a, b, c):
     angle = math.acos(min(1.0, max(-1.0, cosine_angle)))  # Clamp to avoid NaN
     return math.degrees(angle)
 
-def draw_angle_arc(frame, b, a, c, angle, radius=30, color=(0, 255, 0), thickness=2):
+def draw_angle_arc(frame, b, a, c, angle, radius=30, color=(0, 255, 0), thickness=-1):
     """Draw an arc representing the angle at point b between a and c."""
 
     # Convert points to numpy for vector math
@@ -743,7 +743,7 @@ def find_best_reference_frame(reference_frames, progress_ratio):
 
 import openai
 
-def get_ai_feedback(classification, kneeangle, elbowangle):
+def get_ai_feedback(classification, kneeangle, elbowangle, hipangle):
     api_key = os.getenv("LungeLearnApiKey")
 
     if not api_key:
@@ -756,8 +756,8 @@ def get_ai_feedback(classification, kneeangle, elbowangle):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a fencing expert. Answer this question, rouhgly 50 words. First explain to me what you know based off the info I give you, then explain how I can improve. If there is not enough information, make up details. Try to back it up with evidence eg 'as evidenced by this angle'. Act as though you can see it directly."},
-            {"role": "user", "content": f"I am practicing fencing doing the pose: {classification}. My knee angle is {kneeangle}. My elbow angle is {elbowangle}. Explain how I can improve, giving evidence in the form of angles."}
+            {"role": "system", "content": "You are a fencing expert. Your job is to provide fencing guidance in rouhgly 50 words. First explain what you can deduce based off the info given using evidence such as angles, then explain how to improve. Your goal is to look professional and replace a real world coach."},
+            {"role": "user", "content": f"I am practicing fencing doing the pose: {classification}. My dominant knee angle is {abs(kneeangle)}. My dominant elbow angle is {abs(elbowangle)}. My hip flexor angle is {abs(hipangle)}. Explain how I can improve, giving evidence in the form of angles."}
         ]
     )
 

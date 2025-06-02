@@ -186,7 +186,7 @@ def model_output_display_page():
         class_confidence = 0.0
     return render_template('modeloutput.html',
                            video_url=video_url,
-                           angle_url=angle_url,
+                           angle_url=video_url,
                            footworkClass=footwork_class,
                            classConfidence=class_confidence,
                            all_predictions_json_str=all_predictions_json_str,
