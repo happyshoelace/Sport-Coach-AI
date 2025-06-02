@@ -8,6 +8,7 @@ from classifier import (save_json,
                         process_single_json_with_angles_in_place, get_prediction_probability_and_index, process_video)
 
 def video_name_to_predictions(video_name, hand):
+    print(video_name)
     # save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
     save_json("./static/uploads", video_name, hand, "./static/uploads")
     new_name = f"{video_name.split('/')[-1].split('.')[0]}.json"
@@ -33,7 +34,7 @@ def video_name_to_predictions(video_name, hand):
 
     print("Done!", probability)
 
-    process_video(os.path.join("./static/uploads", video_name), os.path.join("./static/uploads", video_name + "_angles"), new_name)
+    process_video(os.path.join("./static/uploads", video_name), os.path.join("./static/uploads", video_name + "_angles.webm"), os.path.join("./static/uploads", new_name + "_Raw.json"))
 
     print("Saved vid") 
 

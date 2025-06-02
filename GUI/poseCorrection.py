@@ -7,7 +7,8 @@ def load_reference_poses(pose_type: int):
     Load the reference poses from the best-keypoints folder
     Returns a list of frames with their angles
     """
-    pose_types = {0: "Fleche", 1: "Lunge", 2: "Step", 3: "En Garde"}
+    # pose_types = {0: "Fleche", 1: "Lunge", 2: "Step", 3: "En Garde"}
+    pose_types = {0: "En Garde", 1: "Fleche", 2: "Lunge", 3: "Step"}
     
     all_frames = []
     with open(Path("samples", pose_types[pose_type]), 'r') as f:
@@ -26,6 +27,7 @@ def find_best_reference_frame(reference_frames, progress_ratio):
     target_idx = int(progress_ratio * (len(reference_frames) - 1))
     return reference_frames[target_idx]
 
+# med pipe is already one frame
 def poseCorrection(mediapipe_pose_data: json, pose_type: int, frame_number: int, total_frames: int, forgiveness: int = 10):
     # Load reference poses if not already loaded
     if not hasattr(poseCorrection, 'reference_poses'):

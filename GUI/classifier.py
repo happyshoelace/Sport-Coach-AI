@@ -118,6 +118,11 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
     with open(output_path, 'w') as f:
         json.dump(frame_data, f, indent=2)
 
+    with open(output_path + "_Raw.json", 'w') as f:
+        json.dump(frame_data, f, indent=2)
+
+    # input("...")
+
     print(f"Processing complete. JSON saved to: {output_path}")
     print(f"Processed video saved to: {output_video_path}")
 
@@ -570,7 +575,11 @@ def draw_angle_arc(frame, ptA, ptB, ptC, angle_value, color, radius=50):
         2
     )
 
-def process_video(input_path, output_path, pose_data):
+def process_video(input_path, output_path, pose_path):
+
+        
+    with open(pose_path, 'r') as f:
+        pose_data = json.load(f)
     # Open the input video
     cap = cv2.VideoCapture(input_path)
     if not cap.isOpened():
@@ -587,23 +596,64 @@ def process_video(input_path, output_path, pose_data):
     fourcc = cv2.VideoWriter_fourcc(*'VP80')  # 'XVID' or 'mp4v' for .mp4 files
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
+    def draw_point(num):
+        cv2.ellipse(frame, (int(keypoints[num]['x'] * width), int(keypoints[num]['y'] * height)), (5, 5), 0, 0, 360, (220, 220, 220), -1)
+
+    # order is first second third eg shoulder elbow wrist
+    def draw_arc(num1, num2, num3):
+        a, b, c = (keypoints[num1]['x'] * width, keypoints[num1]['y'] * height), (keypoints[num2]['x'] * width, keypoints[num2]['y'] * height), (keypoints[num3]['x'] * width, keypoints[num3]['y'] * height)
+        angle = calculate_angle(a, b, c)
+        draw_angle_arc(frame, b, a, c, angle, radius=25, color=(0, 255, 255))
+    
+    def draw_line_between_points(num1, num2):
+        p1 = (int(keypoints[num1]['x'] * width), int(keypoints[num1]['y'] * height))
+        p2 = (int(keypoints[num2]['x'] * width), int(keypoints[num2]['y'] * height))
+        cv2.line(frame, p1, p2, (180, 180, 180), 2)
+
     frame_number = 0
     while True:
         ret, frame = cap.read()
         if not ret:
             break
 
-        keypoints = pose_data[frame_number]["keypoints"]
-        if len(keypoints) == 22:
+        keypoints = pose_data[frame_number].get("keypoints")
+        if len(keypoints) == 33:
             # Draw all keypoints
-            for pt in keypoints:
-                cv2.circle(frame, (int(pt[0]), int(pt[1])), 3, (255, 0, 0), -1)
+            draw_point(0)
 
-            # Example: calculate angle at the elbow
-            # Let's say point 5 (shoulder), 6 (elbow), 7 (wrist)
-            a, b, c = keypoints[5], keypoints[6], keypoints[7]
-            angle = calculate_angle(a, b, c)
-            draw_angle_arc(frame, b, angle, radius=25, color=(0, 255, 255))
+            for i in range(11, 33, 1):
+                draw_point(i)
+
+            draw_arc(12, 14, 16)
+            draw_arc(11, 13, 15)
+            draw_arc(24, 26, 28)
+            draw_arc(23, 25, 27)
+            draw_arc(12, 24, 26)
+            draw_arc(11, 23, 25)
+
+            draw_line_between_points(0, 11)
+            draw_line_between_points(0, 12)
+            draw_line_between_points(12, 14)
+            draw_line_between_points(14, 16)
+            draw_line_between_points(12, 24)
+            draw_line_between_points(24, 26)
+            draw_line_between_points(26, 28)
+            draw_line_between_points(28, 30)
+            draw_line_between_points(30, 32)
+            draw_line_between_points(32, 28)
+            draw_line_between_points(11, 12)
+            draw_line_between_points(23, 24)
+            draw_line_between_points(11, 23)
+            draw_line_between_points(11, 13)
+            draw_line_between_points(13, 15)
+            draw_line_between_points(23, 25)
+            draw_line_between_points(25, 27)
+            draw_line_between_points(27, 29)
+            draw_line_between_points(29, 31)
+            draw_line_between_points(27, 31)
+        else:
+            print("skipping ellipse")
+        
 
         out.write(frame)
         frame_number += 1
@@ -620,10 +670,28 @@ def calculate_angle(a, b, c):
     angle = math.acos(min(1.0, max(-1.0, cosine_angle)))  # Clamp to avoid NaN
     return math.degrees(angle)
 
-def draw_angle_arc(frame, center, angle, radius=30, color=(0, 255, 0), thickness=2):
-    """Draw an arc to visualize the angle at a joint."""
-    x, y = int(center[0]), int(center[1])
-    start_angle = -angle / 2
-    end_angle = angle / 2
-    # Draw arc from -angle/2 to +angle/2
-    cv2.ellipse(frame, (x, y), (radius, radius), 0, start_angle, end_angle, color, thickness)
+def draw_angle_arc(frame, b, a, c, angle, radius=30, color=(0, 255, 0), thickness=2):
+    """Draw an arc representing the angle at point b between a and c."""
+
+    # Convert points to numpy for vector math
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
+
+    # Vectors from b to a and b to c
+    ba = a - b
+    bc = c - b
+
+    # Calculate starting angle using atan2
+    start_angle = math.degrees(math.atan2(ba[1], ba[0]))
+    end_angle = math.degrees(math.atan2(bc[1], bc[0]))
+
+    # Fix direction: ensure we sweep in the correct direction
+    arc_angle = (end_angle - start_angle) % 360
+    if arc_angle > 180:
+        arc_angle -= 360  # Sweep the shorter way
+
+    # Draw the arc
+    center = (int(b[0]), int(b[1]))
+    cv2.ellipse(frame, center, (radius, radius), 0, start_angle, start_angle + arc_angle, color, thickness)
+
