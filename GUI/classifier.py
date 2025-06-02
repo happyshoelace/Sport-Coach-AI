@@ -545,37 +545,8 @@ def get_prediction_probability_and_index(probs):
     # FIRST is prob eg 90% SECOND is index eg 2
     return float(np.max(avg_probs)), result
 
-import math
 
-def draw_angle_arc(frame, ptA, ptB, ptC, angle_value, color, radius=50):
-    """
-    Draws an arc representing the angle between three points on the frame.
-    ptB is the vertex point (joint).
-    """
-    # Convert normalized points (0-1) to pixel coordinates
-    def denorm(pt):
-        return int(pt.x * frame.shape[1]), int(pt.y * frame.shape[0])
-    
-    a = denorm(ptA)
-    b = denorm(ptB)
-    c = denorm(ptC)
-    
-    # Calculate angle direction
-    angle_rad = math.radians(angle_value)
-    
-    # Draw the angle arc
-    cv2.ellipse(
-        frame,
-        b,  # center
-        (radius, radius),
-        0,  # no rotation
-        0,
-        angle_value,
-        color,
-        2
-    )
-
-def process_video(input_path, output_path, pose_path):
+def process_video(input_path, output_path, pose_path, classification, sample_path):
 
         
     with open(pose_path, 'r') as f:
@@ -600,15 +571,39 @@ def process_video(input_path, output_path, pose_path):
         cv2.ellipse(frame, (int(keypoints[num]['x'] * width), int(keypoints[num]['y'] * height)), (5, 5), 0, 0, 360, (220, 220, 220), -1)
 
     # order is first second third eg shoulder elbow wrist
-    def draw_arc(num1, num2, num3):
+    def draw_arc(num1, num2, num3, col):
         a, b, c = (keypoints[num1]['x'] * width, keypoints[num1]['y'] * height), (keypoints[num2]['x'] * width, keypoints[num2]['y'] * height), (keypoints[num3]['x'] * width, keypoints[num3]['y'] * height)
         angle = calculate_angle(a, b, c)
-        draw_angle_arc(frame, b, a, c, angle, radius=25, color=(0, 255, 255))
+        draw_angle_arc(frame, b, a, c, angle, radius=25, color=col)
     
     def draw_line_between_points(num1, num2):
         p1 = (int(keypoints[num1]['x'] * width), int(keypoints[num1]['y'] * height))
         p2 = (int(keypoints[num2]['x'] * width), int(keypoints[num2]['y'] * height))
         cv2.line(frame, p1, p2, (180, 180, 180), 2)
+
+    def angle_difference(num1, num2, num3, ref_angle):
+        a, b, c = (keypoints[num1]['x'] * width, keypoints[num1]['y'] * height), (keypoints[num2]['x'] * width, keypoints[num2]['y'] * height), (keypoints[num3]['x'] * width, keypoints[num3]['y'] * height)
+        actual_angle = calculate_angle(a, b, c)
+        diff = (ref_angle - actual_angle + 180) % 360 - 180
+        return diff
+    
+    def angle(num1, num2, num3):
+        a, b, c = (keypoints[num1]['x'] * width, keypoints[num1]['y'] * height), (keypoints[num2]['x'] * width, keypoints[num2]['y'] * height), (keypoints[num3]['x'] * width, keypoints[num3]['y'] * height)
+        actual_angle = calculate_angle(a, b, c)
+        return actual_angle
+    
+    Y = (0, 255, 255)
+    G = (0, 255, 0)
+    R = (0, 0, 255)
+
+    def get_colour_from_angle_diff(angle_diff, forgiveness: int = 30):
+        if angle_diff <= forgiveness / 2:
+            return G
+        elif angle_diff <= forgiveness:
+            return Y
+        else:
+            return R
+
 
     frame_number = 0
     while True:
@@ -617,19 +612,33 @@ def process_video(input_path, output_path, pose_path):
             break
 
         keypoints = pose_data[frame_number].get("keypoints")
+
+        frame_ratio = frame_number / frame_count
+        sample_poses = load_reference_poses(classification, sample_path)
+        best_reference_frame = find_best_reference_frame(sample_poses, frame_ratio)
+
+
+
+
         if len(keypoints) == 33:
-            # Draw all keypoints
+            left_elbow_difference = angle_difference(12, 14, 16, best_reference_frame.get('angles').get('left_elbow_angle'))
+            right_elbow_difference = angle_difference(11, 13, 15, best_reference_frame.get('angles').get('right_elbow_angle'))
+            left_knee_difference = angle_difference(24, 26, 28, best_reference_frame.get('angles').get('left_knee_flexion'))
+            right_knee_difference = angle_difference(23, 25, 27, best_reference_frame.get('angles').get('right_knee_flexion'))
+            left_hip_difference = angle_difference(12, 24, 26, best_reference_frame.get('angles').get('left_hip_abduction'))
+            right_hip_difference = angle_difference(11, 13, 25, best_reference_frame.get('angles').get('right_hip_abduction'))
+
             draw_point(0)
 
             for i in range(11, 33, 1):
                 draw_point(i)
 
-            draw_arc(12, 14, 16)
-            draw_arc(11, 13, 15)
-            draw_arc(24, 26, 28)
-            draw_arc(23, 25, 27)
-            draw_arc(12, 24, 26)
-            draw_arc(11, 23, 25)
+            draw_arc(12, 14, 16, get_colour_from_angle_diff(left_elbow_difference))
+            draw_arc(11, 13, 15, get_colour_from_angle_diff(right_elbow_difference))
+            draw_arc(24, 26, 28, get_colour_from_angle_diff(left_knee_difference))
+            draw_arc(23, 25, 27, get_colour_from_angle_diff(right_knee_difference))
+            draw_arc(12, 24, 26, get_colour_from_angle_diff(left_hip_difference))
+            draw_arc(11, 23, 25, get_colour_from_angle_diff(right_hip_difference))
 
             draw_line_between_points(0, 11)
             draw_line_between_points(0, 12)
@@ -661,6 +670,17 @@ def process_video(input_path, output_path, pose_path):
     cap.release()
     out.release()
     print("Video processing complete and saved to", output_path)
+
+    try:
+        text = get_ai_feedback(classification, right_knee_difference, right_elbow_difference)
+    except Exception as e:
+        print(e)
+        text = ""
+    return text
+
+import math
+
+
 
 def calculate_angle(a, b, c):
     """Calculate angle (in degrees) at point b between a and c."""
@@ -695,3 +715,53 @@ def draw_angle_arc(frame, b, a, c, angle, radius=30, color=(0, 255, 0), thicknes
     center = (int(b[0]), int(b[1]))
     cv2.ellipse(frame, center, (radius, radius), 0, start_angle, start_angle + arc_angle, color, thickness)
 
+from pathlib import Path
+
+def load_reference_poses(pose_type: int, sample_path: str):
+    """
+    Load the reference poses from the best-keypoints folder
+    Returns a list of frames with their angles
+    """
+    pose_types = {0: "En Garde", 1: "Fleche", 2: "Lunge", 3: "Step"}
+    
+    all_frames = []
+    with open(os.path.join(sample_path, pose_types[pose_type] + ".json"), 'r') as f:
+        data = json.load(f)
+        frames = data if isinstance(data, list) else [data]
+        all_frames.extend(frames)
+    
+    all_frames.sort(key=lambda x: x.get('frame', 0) if isinstance(x, dict) else 0)
+    return all_frames
+
+def find_best_reference_frame(reference_frames, progress_ratio):
+    """
+    Find the best matching reference frame based on progress through the movement
+    progress_ratio: float between 0 and 1 indicating progress through the movement
+    """
+    target_idx = int(progress_ratio * (len(reference_frames) - 1))
+    return reference_frames[target_idx]
+
+import openai
+
+def get_ai_feedback(classification, kneeangle, elbowangle):
+    api_key = os.getenv("LungeLearnApiKey")
+
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY environment variable not set")
+
+    # Set the API key
+    openai.api_key = api_key
+
+    # Make a request to the ChatGPT model
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a fencing expert. Answer this question, rouhgly 50 words. First explain to me what you know based off the info I give you, then explain how I can improve. If there is not enough information, make up details. Try to back it up with evidence eg 'as evidenced by this angle'. Act as though you can see it directly."},
+            {"role": "user", "content": f"I am practicing fencing doing the pose: {classification}. My knee angle is {kneeangle}. My elbow angle is {elbowangle}. Explain how I can improve, giving evidence in the form of angles."}
+        ]
+    )
+
+    # Print the model's reply
+    print(response["choices"][0]["message"]["content"])
+
+    return response["choices"][0]["message"]["content"]

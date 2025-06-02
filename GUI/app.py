@@ -26,13 +26,16 @@ def process_video_background(job_id, video_server_path, filename_only, hand_for_
         try:
             print(f"Background processing started for job_id: {job_id}, file: {filename_only}, hand: {hand_for_job}")
             # Pass only the filename to your model, not the URL
-            probability, index, total_frame_predictions = video_name_to_predictions(filename_only, hand_for_job)
+            probability, index, total_frame_predictions, ai_text = video_name_to_predictions(filename_only, hand_for_job)
             classes = ["En Garde", "Fleche", "Lunge", "Step"]
+            print("Received ai text", len(ai_text))
             results_data = {
                 'video_url': f"/uploads/{filename_only}_annotated.webm",
+                'angle_url': f"/uploads/{filename_only}_angles.webm",
                 'footworkClass': classes[index],
                 'classConfidence': float(probability),
-                'all_predictions_json': total_frame_predictions.tolist()
+                'all_predictions_json': total_frame_predictions.tolist(),
+                'ai_text': ai_text
             }
             jobs[job_id] = {'status': 'complete', 'data': results_data}
             # print(f"Job {job_id} completed. Results: {results_data}")
@@ -88,14 +91,6 @@ def trimVideoPage():
         
     return render_template('trimvideo.html', video=video)
 
-# @app.route('/modeloutput', methods=['POST'])
-# def modelOutputPage():
-#     if request.method == 'POST':
-#         global dominant_hand
-#         print(request.files.get('file'))
-#         video = request.files.get('file')
-#         # We can pop a post request to AWS here and that will fill the gaps for the template page 
-#     return render_template('modeloutput.html', jointsVideo=video, footworkClass="En Garde", classConfidence=100) 
 from werkzeug.utils import secure_filename
 from flask import url_for
 
@@ -127,8 +122,9 @@ def modelOutputPage():
     
 
     # don't have to provide hand
-    probability, index, total_frame_predictions = video_name_to_predictions(video_url, dominant_hand)
+    probability, index, total_frame_predictions, ai_text = video_name_to_predictions(video_url, dominant_hand)
     classes = ["En Garde", "Fleche", "Lunge", "Step"]
+    print("Test ai len", len(ai_text))
     print(video_url)
 
     # now pass video_url (a string) to your template
@@ -137,7 +133,9 @@ def modelOutputPage():
         video_url=url_for('uploaded_file', filename='output.mp4'),
         footworkClass=classes[index],
         classConfidence=probability,
-        all_predictions_json_str=json.dumps(total_frame_predictions.tolist())
+        all_predictions_json_str=json.dumps(total_frame_predictions.tolist(),
+                                            ai_text=ai_text
+                                            )
     )
 
 @app.route('/initiate_processing', methods=['POST'])
@@ -178,6 +176,9 @@ def model_output_display_page():
     footwork_class = request.args.get('footworkClass')
     class_confidence = request.args.get('classConfidence')
     all_predictions_json_str = request.args.get('all_predictions_json')
+    ai_text = request.args.get('ai_text')
+    angle_url = request.args.get('angle_url')
+
     # Convert class_confidence to float if possible
     try:
         class_confidence = float(class_confidence)*100
@@ -185,13 +186,19 @@ def model_output_display_page():
         class_confidence = 0.0
     return render_template('modeloutput.html',
                            video_url=video_url,
+                           angle_url=angle_url,
                            footworkClass=footwork_class,
                            classConfidence=class_confidence,
-                           all_predictions_json_str=all_predictions_json_str)
+                           all_predictions_json_str=all_predictions_json_str,
+                           ai_text=ai_text)
 
 @app.route('/loading')
 def loading_page_route():
     return render_template('loading.html')
+from urllib.parse import urlencode
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)
+

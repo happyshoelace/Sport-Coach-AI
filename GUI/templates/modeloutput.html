@@ -33,14 +33,15 @@
     <main>
       <section class="modeloutput centered-content">
         <h1>Model Output</h1>
-        {% if video_url %}
+        {% if angle_url %}
         <p>Your video has been successfully processed! Here are the results:</p>
-        <div class="output-container" style="width: 100%;">
-            <video
+        <div class="output-container" style="width: 100%">
+          <video
             id="output-video"
-            src="{{ video_url }}"
+            src="{{ angle_url }}"
             controls
-            class="full-video">
+            class="full-video"
+          >
             Your browser does not support the video tag.
           </video>
           <div class="output-info">
@@ -61,7 +62,37 @@
           <canvas id="timelineChart" width="800" height="300"></canvas>
         </div>
         {% else %}
-        <p>No analysis data found. Please <a href="{{ url_for('modelVideoInputPageRoute') }}">upload a video</a> to see results.</p>
+        <p>
+          No analysis data found. Please
+          <a href="{{ url_for('modelVideoInputPageRoute') }}">upload a video</a>
+          to see results.
+        </p>
+        {% endif %}
+        <!-- <div class="output-container" style="width: 100%">
+          <video
+            id="output-video-angle  "
+            src="{{ angle_url }}"
+            controls
+            class="full-video"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div> -->
+        {% if ai_text %}
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const aiText = {{ ai_text | tojson | safe }};
+            console.log("AI Text:", aiText);
+
+            const aiTextDiv = document.getElementById("aiTextOutput");
+            if (aiTextDiv) {
+              aiTextDiv.innerText = aiText;
+            }
+          });
+        </script>
+
+        <p>AI has analyzed your data and said this:</p>
+        <div id="aiTextOutput" style="white-space: pre-wrap"></div>
         {% endif %}
       </section>
     </main>
@@ -72,27 +103,36 @@
       <a href="https://github.com/GammaKing2000">Adit</a>
     </footer>
     <script>
-    const predictionsJsonStringFromServer = `{{ all_predictions_json_str | default('null') | safe }}`;
-    let all_predictions_data_for_charts;
-    try {
+      const predictionsJsonStringFromServer = `{{ all_predictions_json_str | default('null') | safe }}`;
+      let all_predictions_data_for_charts;
+      try {
         if (
-            predictionsJsonStringFromServer &&
-            predictionsJsonStringFromServer.toLowerCase() !== 'null' &&
-            predictionsJsonStringFromServer.toLowerCase() !== 'none' &&
-            predictionsJsonStringFromServer.trim() !== ''
+          predictionsJsonStringFromServer &&
+          predictionsJsonStringFromServer.toLowerCase() !== "null" &&
+          predictionsJsonStringFromServer.toLowerCase() !== "none" &&
+          predictionsJsonStringFromServer.trim() !== ""
         ) {
-            all_predictions_data_for_charts = JSON.parse(predictionsJsonStringFromServer);
+          all_predictions_data_for_charts = JSON.parse(
+            predictionsJsonStringFromServer
+          );
         } else {
-            all_predictions_data_for_charts = [];
-            console.warn('No prediction data string found or string was null/None/empty. Defaulting to empty array for charts.');
+          all_predictions_data_for_charts = [];
+          console.warn(
+            "No prediction data string found or string was null/None/empty. Defaulting to empty array for charts."
+          );
         }
-    } catch (e) {
-        console.error("Error parsing predictions JSON from server string:", e, "Server string was:", predictionsJsonStringFromServer);
+      } catch (e) {
+        console.error(
+          "Error parsing predictions JSON from server string:",
+          e,
+          "Server string was:",
+          predictionsJsonStringFromServer
+        );
         all_predictions_data_for_charts = [];
-    }
-    window.all_predictions = all_predictions_data_for_charts;
-</script>
-<script src="{{ url_for('static', filename='scripts/predictionConfidence.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/predictionTimeline.js') }}"></script>
+      }
+      window.all_predictions = all_predictions_data_for_charts;
+    </script>
+    <script src="{{ url_for('static', filename='scripts/predictionConfidence.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/predictionTimeline.js') }}"></script>
   </body>
 </html>

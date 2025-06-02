@@ -8,3 +8,4 @@ matplotlib
 ultralytics
 mediapipe
 flask
+openai
