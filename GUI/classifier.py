@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from ultralytics import YOLO
 import datetime
 from poseCorrection import poseCorrection
+import requests
 
 # 1) Load your YOLO model once
 yolo = YOLO('yolov8n.pt')  # or 'yolov5n.pt'
@@ -741,27 +742,46 @@ def find_best_reference_frame(reference_frames, progress_ratio):
     target_idx = int(progress_ratio * (len(reference_frames) - 1))
     return reference_frames[target_idx]
 
-import openai
+# import openai
 
 def get_ai_feedback(classification, kneeangle, elbowangle, hipangle):
-    api_key = os.getenv("LungeLearnApiKey")
+    # api_key = os.getenv("LungeLearnApiKey")
 
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY environment variable not set")
+    # if not api_key:
+    #     raise ValueError("OPENAI_API_KEY environment variable not set")
 
-    # Set the API key
-    openai.api_key = api_key
+    # # Set the API key
+    # openai.api_key = api_key
 
-    # Make a request to the ChatGPT model
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a fencing expert. Your job is to provide fencing guidance in rouhgly 50 words. First explain what you can deduce based off the info given using evidence such as angles, then explain how to improve. Your goal is to look professional and replace a real world coach."},
-            {"role": "user", "content": f"I am practicing fencing doing the pose: {classification}. My dominant knee angle is {abs(kneeangle)}. My dominant elbow angle is {abs(elbowangle)}. My hip flexor angle is {abs(hipangle)}. Explain how I can improve, giving evidence in the form of angles."}
-        ]
-    )
+    # # Make a request to the ChatGPT model
+    # response = openai.ChatCompletion.create(
+    #     model="gpt-3.5-turbo",
+    #     messages=[
+    #         {"role": "system", "content": "You are a fencing expert. Your job is to provide fencing guidance in rouhgly 50 words. First explain what you can deduce based off the info given using evidence such as angles, then explain how to improve. Your goal is to look professional and replace a real world coach."},
+    #         {"role": "user", "content": f"I am practicing fencing doing the pose: {classification}. My dominant knee angle is {abs(kneeangle)}. My dominant elbow angle is {abs(elbowangle)}. My hip flexor angle is {abs(hipangle)}. Explain how I can improve, giving evidence in the form of angles."}
+    #     ]
+    # )
 
     # Print the model's reply
-    print(response["choices"][0]["message"]["content"])
+    # print(response["choices"][0]["message"]["content"])
 
-    return response["choices"][0]["message"]["content"]
+    # return response["choices"][0]["message"]["content"]
+    WSL_URL = "http://192.168.1.110:5000"  # Example: adjust as needed
+    endpoint = f"{WSL_URL}/chat"
+
+    payload = {
+        "prompt": f"I am practicing fencing doing the pose: {classification}. My dominant knee angle is {abs(kneeangle):.3f}. My dominant elbow angle is {abs(elbowangle):.3f}. My hip flexor angle is {abs(hipangle):.3f}. Explain how I can improve, giving evidence in the form of angles."
+        }
+    print(f"Calling local LLM with payload: {payload}")
+
+    try:
+        response = requests.post(endpoint, json=payload, timeout=30)
+        response.raise_for_status()
+        result = response.json()
+        print(f"Response from local LLM: {result}")
+        return result.get("response", "")
+    except Exception as e:
+        print(f"Error calling local LLM: {e}")
+        return ""
+
+    

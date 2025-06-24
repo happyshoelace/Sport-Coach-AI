@@ -200,5 +200,5 @@ from urllib.parse import urlencode
 
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True)
+    app.run(host="192.168.1.110", port=8080,debug=True, threaded=True)
 

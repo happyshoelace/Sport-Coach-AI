@@ -685,3 +685,12 @@ body.loading-page {
   height: auto;
   max-height: 90vh; /* ensures it never exceeds viewport height */
 }
+
+#aiTextOutput {
+  font-size: 2rem;
+  min-height: 100px;
+  width: 100%;
+  padding: 16px;
+  background: #f9f9f9; /* optional for visibility */
+  border-radius: 8px;   /* optional for style */
+}
