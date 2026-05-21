@@ -55,7 +55,7 @@ def save_json(input_base_path, file_name, dominant_hand, output_base_path):
     os.makedirs(output_folder, exist_ok=True)
     print(f"Output folder: {output_folder}")
 
-
+    print("For save json input path is", video_path)
     cap = cv2.VideoCapture(video_path)
     frame_data = []
     frame_idx = 0
@@ -502,6 +502,7 @@ def predict_windows_from_json(
 
     # 4) Run predictions
     predictions = model.predict(X)
+    print("predictions", predictions)
 
     # 5) Print softmax output for each window
     for i, probs in enumerate(predictions):
@@ -516,6 +517,5 @@ def get_prediction_probability_and_index(probs):
     """
     avg_probs = np.mean(probs, axis=0)  # average over frames
     result = int(np.argmax(avg_probs))
-    avg_probs = np.mean(probs, axis=0)
     # FIRST is prob eg 90% SECOND is index eg 2
     return float(np.max(avg_probs)), result

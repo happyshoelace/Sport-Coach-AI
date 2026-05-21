@@ -6,6 +6,7 @@ from classifier import (save_json,
                         fill_and_prune_single_json, 
                         predict_windows_from_json,
                         process_single_json_with_angles_in_place, get_prediction_probability_and_index)
+from draw_keypoints import draw_points
 
 def video_name_to_predictions(video_name, hand):
     # save_json("./static/uploads", "IMG_0216_00000641_flipped.mov", "right", "./static/uploads")
@@ -35,3 +36,6 @@ def video_name_to_predictions(video_name, hand):
     print("Done!", probability)
 
     return probability, index, total_frame_predictions
+
+def save_video_with_keypoints(input_file, output_file):
+    draw_points(os.path.join("static/uploads", input_file.split('/')[-1]), "static/uploads", output_file)

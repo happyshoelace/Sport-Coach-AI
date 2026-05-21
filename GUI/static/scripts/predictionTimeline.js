@@ -1,4 +1,4 @@
-const classes = ["Fleche", "Lunge", "En Garde", "Step"];
+const classes = ["En Garde", "Fleche", "Lunge", "Step"];
 
 const timelineContext = document.getElementById("timelineChart");
 

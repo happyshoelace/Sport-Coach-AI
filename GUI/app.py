@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
-from wrapper import video_name_to_predictions
+from wrapper import video_name_to_predictions, save_video_with_keypoints
 import os
 
 app = Flask(__name__)
@@ -104,6 +104,8 @@ def modelOutputPage():
 
     # don't have to provide hand
     probability, index, total_frame_predictions = video_name_to_predictions(video_url, dominant_hand)
+    save_video_with_keypoints(video_url, video_url)
+
     for x, i in enumerate(total_frame_predictions):
         print(x, i)
         print(total_frame_predictions[x])

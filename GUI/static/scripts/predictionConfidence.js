@@ -1,4 +1,4 @@
-const labels = ["Fleche", "Lunge", "En Garde", "Step"];
+const labels = ["En Garde", "Fleche", "Lunge", "Step"];
 const initialData = [0.5, 0.2, 0.8, 0.1];
 
 const confidenceContext = document.getElementById("predictionChart");
